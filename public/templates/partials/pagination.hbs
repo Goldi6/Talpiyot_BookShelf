@@ -1,0 +1,39 @@
+<div id="pagination">
+
+      {{#if pages.morePrevious}}
+              <span class="page-num" id="page-more-previous" data-query="{{pages.morePrevious}}">
+              ...
+              </span>  
+      {{/if}}
+                
+                {{#if pages.previous}}
+              <span class="page-num" id="page-previous"  data-query="{{pages.previous}}">
+                {{pages.previous}}
+              </span>  
+              {{/if}}
+
+
+     {{#if pages.current}}
+              <span class="page-num" id="page-current"  data-query="{{pages.current}}">
+                {{pages.current}}
+              </span>  
+    {{/if}}
+
+
+
+
+    {{#if pages.next}}
+              <span class="page-num" id="page-next"  data-query="{{pages.next}}">
+                {{pages.next}}
+              </span>  
+    {{/if}}
+
+
+            {{#if pages.moreNext}}
+              <span class="page-num" id="page-more-next" data-query="{{pages.moreNext}}">
+              ...
+              </span>  
+              {{/if}}
+                
+            </div>
+      

@@ -1,0 +1,13 @@
+    <div id="search-container">
+           
+            <input type="search" name="search-input" id="search-input" >
+            <input type="submit" name="search-go" id="search-go" value="Search">
+            <label for="show-number-of-books">Show: <select name="" id="show-number-of-books">
+             
+                <option value="10" {{#if (equalsTo limit 10)}} selected {{/if}}>10</option>
+                <option value="5" {{#if (equalsTo limit 5)}} selected {{/if}}>5</option>
+                <option value="2"{{#if (equalsTo limit 2)}} selected{{/if}}>2</option>
+                
+            </select> </label>
+        
+        </div>

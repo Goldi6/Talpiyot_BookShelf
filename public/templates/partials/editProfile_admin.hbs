@@ -1,0 +1,29 @@
+<div class="data-block">
+<label for="edit-f-name">Username</label>
+<input type="text" placeholder="{{user.username}}" id="edit-username" name="First name">
+</div>
+{{#if user.birthday}}
+<div class="data-block">
+<label for="edit-birthday">Birthday</label>
+<input id="edit-birthday" type="date"
+name="Birthday" placeholder="{{user.birthday}}">
+</div>
+
+{{/if}}
+<div class="data-block">
+<label for="edit-email">Email</label>
+<input id="edit-email" type="email"
+name="Email" placeholder="{{user.email}}">
+</div>
+
+</div>
+<div class="data-block">
+<label for="new-password">New password</label>
+<input type="password" id="edit-password"
+name="New password">
+</div>
+<div class="data-block">
+<label for="password-repeat">Password repeat</label>
+<input type="password" id="password-repeat"
+name="Password repeat"
+>

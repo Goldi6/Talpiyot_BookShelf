@@ -1,0 +1,40 @@
+
+    
+        <div id="books-container">
+            <div id="books">
+                
+               {{#if books}}
+
+                    {{#each books}}
+
+                        <div class="book">
+                            <figure>
+                                <img src="{{this.url}}" alt="book img">
+                                <figcaption>
+                                    {{this.name}}
+                                </figcaption>
+                            </figure>
+                            <div class="book-specs">
+                                <span>
+                                Quantity: {{this.quantity}}
+                            </span>
+                            <span>
+                                Price: {{this.price}}
+                            </span>
+                            </div>
+                            <div class="options">
+                            
+                            <button class="edit-btn" data-category="{{this.category}}" data-id="{{this.id}}" data-url="{{this.url}}" data-author="{{this.author}}" data-quantity="{{this.quantity}}" data-name="{{this.name}}" data-description="{{this.description}}" data-price="{{this.price}}">Edit</button>
+                                
+                            </div>
+                        </div>
+
+                    {{/each}}
+
+
+                {{/if}}
+            </div>
+
+
+        </div>
+            

@@ -1,0 +1,351 @@
+@import "./variables.scss";
+
+
+.pointer{
+    cursor: pointer;
+}
+a{
+    all: inherit;
+}
+*{
+    box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
+
+}
+body{
+    background-color: rgb(72, 71, 70);
+
+}
+
+
+
+main{
+    min-height: 100vh;
+   
+ 
+    padding-top: 5.5rem;
+    margin: auto;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 98vw;
+   
+
+} 
+ //profile
+
+ #profile-container{
+    color: white;
+    height: 100%;
+    border-right: #fff 3px solid;
+    border-bottom: #fff 3px solid;
+    padding: 3rem;
+    display: grid;
+    place-items: center;
+    
+    min-width: 400px;
+    background-color: $green;
+    width: fit-content;
+    position: absolute;
+    top: 0;
+    left: -1rem;
+    .profile-block{
+    width: 100%;
+    transition: width 1s;
+        &.closed{
+            display: none;
+        }
+
+
+
+
+        .user-data{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1.5rem;
+            align-items: center;
+        
+            
+            .data{
+                all:inherit;
+
+            }
+   
+        
+         }
+    }
+
+    
+}
+
+    .modal{
+        display: none;
+        z-index: 500;
+        position: fixed;
+        top: 0;
+        left: -1rem;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0,0,0,0.4);
+        place-items: center;
+        .modal-inner-block{
+            width: fit-content;
+            background-color: $green;
+            border-radius: 30%;
+            border: 5px solid #fff;
+            color: #fff;
+            padding: 3rem;
+            h3{
+                color: wheat;
+            }
+        }
+    }
+    .btn-block{
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        button,#update-user-btn{
+            margin-top: 2.5rem;
+            padding: 0.5rem;
+            border-radius: 3rem;
+            border: wheat 2px solid;
+            background: none;
+            color: #fff;
+        }
+        #update-user-btn{
+            border-radius: 1px;
+            transform: scale(120%);
+        }
+        .back-btn{
+            background-color: black;
+
+        }
+    }
+    .data-block{
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        &:first-child{
+            justify-self: start;          
+        }
+        &:last-child{
+            justify-self: end;          
+        }
+    }
+
+
+//end-profile 
+
+
+.input-error {
+border: red 1px solid;}
+#register_inp-date::before{
+    content: "Birthday_ ";
+
+}
+
+
+
+
+#cart-container{
+    border-radius: 1rem;
+    color: $green;
+    background-color: #eee;
+    width: 90%;
+    margin: auto;
+    height: auto;
+
+ 
+    h2{
+        box-sizing: border-box;
+        text-align: center;
+        padding: 1rem;
+        margin: 0 2rem;
+        border-bottom: 1px solid black;
+    }
+    .options-container{
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #checkout-btn{
+        padding: 1rem;
+        border-radius: 3px;
+        border: 2px solid #333;
+        font-size: 1.5rem;
+        background-color: #999;
+    }
+    #cart-message{
+        padding: 1rem;
+        font-size: 1.5rem;
+    }
+    #items-container{
+
+
+padding: 0.5rem 2rem;
+
+    }
+    .item{
+
+        display: grid;
+        grid-template-columns: auto 2rem;
+        align-items: center;
+        border-bottom: 
+            1px solid black;
+        
+
+        .remove-from-cart{
+            border: 1px solid #333;
+            background-color: red;
+            color: white;
+            height: 2rem;
+            width: 2rem;
+            border-radius: 50%;
+            cursor: pointer;
+        &:hover{
+            filter: brightness(70%);
+        }
+        }
+        
+        .item-specs{
+    
+            display: grid;
+            grid-template-columns: 3fr 1fr 1.5fr 1fr;
+            align-items: center;
+            justify-items: center;
+            @media screen and (max-width:650px){
+                grid-template-columns: 2fr  1fr;
+                grid-template-rows: 1fr 1fr;
+            }
+            .cart-item-name{
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                place-self: center start;
+            }
+            .counter{
+                padding: 0.5rem;
+                display: grid;
+                grid-template-columns: 1fr auto 1fr ;
+                .amount-of-item{
+                    padding: 0.5rem;
+                    border: 2px solid #333;
+                }
+                .count-btn{
+                    cursor: pointer;
+                    border: 2px solid #333;
+    
+                    font-weight: bold;
+                    font-size: 2rem;
+                    width: 3rem;
+                    &.subtract{
+                        border-radius: 1rem 0 0 1rem;
+                    }
+                    &.add{
+                        border-radius:  0 1rem 1rem 0 ;
+                    }
+                }
+            }
+        }
+    }
+  
+}
+
+#search-container{
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    input{
+        border-radius: 3px;
+        padding: 0.5rem;
+
+    }
+    label{
+        display: flex;
+        align-items: center;
+    }
+}
+
+#books-container{
+    position: relative;
+    height: calc(100% - 2.25rem);
+    display: block;
+
+#books{
+    height: 90%;
+
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 4rem;
+    color: white;
+    font-size: 1rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    margin: 3rem 0;
+
+
+    .book{
+        a{
+            all: inherit;
+            cursor: pointer;
+        }
+        width: 200px;
+        img{
+            width: 200px;
+        }
+        figcaption{
+            font-size: 1.5rem;
+          
+        }
+        figcaption:hover{
+text-decoration: underline;        }
+        .book-specs{
+            display: flex;
+            justify-content: space-between;
+        }
+    
+        .edit-btn,.add-to-cart-btn{
+            width:100%;
+        
+             margin-top:0.75rem;
+             cursor: pointer;
+             
+        }
+    }
+}
+
+}
+
+
+
+#pagination{
+    padding: 1rem;
+    text-align: center;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: baseline;
+    
+    .page-num{
+        cursor: pointer;
+        color: white;
+        text-decoration: underline;
+
+    }
+    #page-current{
+        font-size: 1.5rem;
+        color: #aaa;
+
+    }
+}
+
+
+
+
+

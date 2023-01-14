@@ -1,0 +1,114 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: rgb(13, 68, 60);
+  color: rgb(235, 158, 14);
+  padding: 0.5rem;
+  z-index: 300;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  border-bottom: 3px solid #fff;
+}
+header h1 {
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+header .icon-img-btn#logout-btn {
+  background: url("../assets/logout.png") no-repeat center;
+  background-size: 1.5rem;
+  background-color: #fff;
+  height: 2.3rem;
+  aspect-ratio: 1;
+  border: none;
+  padding: 0.3rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+header .icon-img-btn#add-book-btn {
+  background: url("../assets/add.png") no-repeat center;
+  background-size: 1.5rem;
+  background-color: #fff;
+  height: 2.3rem;
+  aspect-ratio: 1;
+  border: none;
+  padding: 0.3rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+header .icon-img-btn#cart-btn {
+  background: url("../assets/icons8-shopping-cart-90.png") no-repeat center;
+  background-size: 1.5rem;
+  background-color: #fff;
+  height: 2.3rem;
+  aspect-ratio: 1;
+  border: none;
+  padding: 0.3rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+header #icons-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header #icons-container #profile-header, header #icons-container #cart-header, header #icons-container #options-header {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  text-decoration: underline;
+  color: white;
+}
+header #icons-container #profile-header a, header #icons-container #cart-header a, header #icons-container #options-header a {
+  color: white;
+  cursor: pointer;
+}
+header #icons-container .icon {
+  cursor: pointer;
+  aspect-ratio: 1;
+  height: 3rem;
+}
+header #icons-container .icon#profile-icon {
+  background-color: #333;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #fff;
+}
+header #icons-container .icon#profile-icon .circle {
+  background-color: #fff;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  height: 38%;
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+header #icons-container .icon#profile-icon .curve {
+  border-radius: 50% 50% 0 0;
+  background-color: #fff;
+  height: 45%;
+  width: 2rem;
+  position: absolute;
+  left: 50%;
+  top: 67%;
+  transform: translateX(-50%);
+}
+header #icons-container .icon#nav-icon {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  padding: 0.2rem 0.3rem;
+}
+header #icons-container .icon#nav-icon span {
+  background-color: #fff;
+  height: 0.25rem;
+  width: 100%;
+  border-radius: 5px;
+}

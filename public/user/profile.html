@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../style/css/root.css">
+    <link rel="stylesheet" href="../style/css/header_style.css">
+    <link rel="stylesheet" href="../style/css/style.css">
+</head>
+<body>
+    
+    <header>
+       
+   
+    </header>
+
+    <main id="profile">
+
+        <div id="profile-container">
+            <div id="view-profile" class="profile-block">
+                <div class="user-data" id="profile-data">
+                
+                    <div class="data">
+                        
+                    </div>
+                <div class="btn-block">
+                    <button id="open-edit-user-btn">
+                        Edit user
+                    </button>
+                </div>
+            </div>
+
+
+            </div>
+            <div id="edit-profile" class="profile-block closed">
+                <form action="" class="user-data" id="edit-user-form">
+                   <div class="data">
+                    
+                   </div>
+                    
+              
+                    
+                    
+                    <div class="btn-block">
+                        
+                        <button class="back-btn" id="back-to-view-profile-btn">back</button>
+                        <button class="back-btn" id="reset-form-btn">reset</button>
+                        <input type="submit" id="update-user-btn" placeholder="Update"></input>
+                    </div>
+    
+                </form>
+            </div>
+        </div>
+        <div class="modal" id="verify-modal">
+
+            <div class="modal-inner-block">
+                
+                <h3>Update your Data?</h3>
+                <div id="data-to-update">
+                    
+                </div>
+                <div class="btn-block">
+                    <button class="back-btn close-modal" id="close-submit-modal-btn">
+                        Close
+                    </button>
+                    
+                    <button id="send-new-profile-data-btn">Submit</button>
+                </div>
+
+            </div>
+
+        
+        </div>
+       
+       
+    </main>
+</div>
+
+
+    <script src="../script/header.js" type="module"></script>
+    <script src="../script/profile.js" type="module"></script>
+
+</body>
+</html>

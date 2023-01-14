@@ -1,0 +1,132 @@
+
+@import './variables.scss';
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;    
+}
+
+
+
+header{
+    h1{
+        font-size: 1.2rem;
+        cursor: pointer;
+    }
+    .icon-img-btn{
+        
+        &#logout-btn{
+            background: url("../assets/logout.png") no-repeat center;
+            background-size: 1.5rem;
+            background-color: #fff;
+            height: 2.3rem;
+            aspect-ratio: 1;
+            border: none;
+            padding: 0.3rem;
+            border-radius: 50%;
+            cursor: pointer;
+        
+        }
+        &#add-book-btn{
+            background: url("../assets/add.png") no-repeat center;
+            background-size: 1.5rem;
+            background-color: #fff;
+            height: 2.3rem;
+            aspect-ratio: 1;
+            border: none;
+            padding: 0.3rem;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        &#cart-btn{
+            background: url("../assets/icons8-shopping-cart-90.png") no-repeat center;
+            background-size: 1.5rem;
+            background-color: #fff;
+            height: 2.3rem;
+            aspect-ratio: 1;
+            border: none;
+            padding: 0.3rem;
+            border-radius: 50%;
+                cursor: pointer;
+
+        }
+    }
+  
+    background-color: $green;
+    color: $orange;
+    padding: 0.5rem;
+    z-index: 300;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    border-bottom:  3px solid #fff;
+    #icons-container{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        #profile-header,#cart-header,#options-header{
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            text-decoration: underline;
+            color: white;
+            a{
+                color: white;
+                cursor: pointer;
+            }       
+        }
+        .icon{
+            cursor: pointer;
+            aspect-ratio: 1;
+            height: 3rem;
+            &#profile-icon{
+                background-color: #333;
+                border-radius: 50%;
+                position: relative;
+                overflow: hidden;
+                border: 1px solid #fff;
+              
+                .circle{
+                     background-color: #fff;
+                border-radius: 50%;
+                aspect-ratio: 1;
+                height: 38%;
+                position: absolute;
+                top: 22%;
+                left: 50%;
+            transform: translate(-50%,0);    
+                }
+                .curve{
+                    border-radius: 50% 50% 0 0 ;
+                    background-color: #fff;
+                    height: 45%;
+                    width: 2rem;
+                    position: absolute;
+                    left: 50%;
+                    top: 67%;
+                    transform: translateX(-50%);
+                }
+            }
+            
+            &#nav-icon{
+                display: flex;
+                justify-content: space-evenly;
+                flex-direction: column;
+                padding: 0.2rem 0.3rem;
+                span{
+                    background-color: #fff;
+                    height: 0.25rem;
+                    width: 100%;
+                    border-radius: 5px;
+            
+                }
+            
+            }
+        }  
+        
+
+    }
+   
+  
+}
