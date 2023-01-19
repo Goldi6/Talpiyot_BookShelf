@@ -45,10 +45,9 @@ registerForm.onsubmit = function (e) {
 
     postAuth("http://localhost:3000/users/new", data).then((user) => {
       console.log(user);
-      if (user.user) {
-        //setToken(user.token);
+      if (user.token) {
+        setToken(user.token);
         welcome(user.user);
-        window.location.replace("/");
       } else {
         const message = user.message;
         alert(message);
@@ -56,7 +55,6 @@ registerForm.onsubmit = function (e) {
       }
     });
   } else {
-    //TODO:
     console.log("password error");
   }
 };
@@ -78,10 +76,9 @@ loginForm.onsubmit = function (e) {
       console.log(document.cookie);
       console.log(user);
       console.log("!!!");
-      if (user.user) {
-        //setToken(user.token);
-        // welcome(user.user);
-        window.location.replace("/");
+      if (user.token) {
+        setToken(user.token);
+        welcome(user.user);
       } else {
         const message = user.message;
         alert(message);

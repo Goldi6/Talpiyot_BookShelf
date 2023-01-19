@@ -45,8 +45,10 @@ const addToCart = (bookId) => {
       cart = JSON.stringify(cart);
     }
     window.localStorage.setItem("cart", cart);
+    alert("item added to cart!");
   } else {
     addItemToUserCart(bookId).then((result) => {
+      alert("item added to cart!");
       console.log(result);
     });
   }
@@ -98,7 +100,7 @@ const userCheckOut = async () => {
     Authorization: "Bearer " + token,
   });
 
-  return await fetch("/users/cart/buy", { headers })
+  return await fetch("/users/cart/buy", { method: "patch", headers })
     .then((response) => {
       if (response.ok) {
         return response.json();

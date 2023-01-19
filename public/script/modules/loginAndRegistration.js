@@ -14,12 +14,16 @@ const postAuth = async (url, data) => {
     body: JSON.stringify(data),
   })
     .then((response) => {
-      //  if (response.ok) {
-      // console.log(response);
+      // if (response.ok) {
       return response.json();
+      // console.log(response);
+      // } else {
+      //   console.log(response.status);
+      // }
     })
 
     .catch((err) => {
+      console.log("error:");
       console.log(err);
     });
 

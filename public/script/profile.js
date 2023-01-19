@@ -8,7 +8,7 @@ const editProfile = document.getElementById("edit-profile");
 const updateForm = document.getElementById("edit-user-form");
 
 window.onload = function () {
-  redirectByUserAuthentication(false);
+  redirectByUserAuthentication(true);
   // console.log("GOLOBAL");
   // console.log(window.userObject);
   setupUserData();

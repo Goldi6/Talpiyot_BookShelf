@@ -21,12 +21,29 @@ loginForm.onsubmit = function (e) {
     body: JSON.stringify(data),
   })
     .then((response) => {
-      return response.text();
+      if (response.ok) {
+        console.log(response);
+        return response.text();
+      } else {
+        return response.json();
+      }
     })
-    .then((html) => {
-      // console.log(html);
-      window.location.reload();
-      document.innerHTML = html;
+    .then((data) => {
+      console.log(data);
+      if (data.status) {
+        const message = data.errorObjects[0].reason;
+        console.log(message);
+        const err = new Error(message);
+        err.name = data.name;
+        throw err;
+        // console.log(data.name);
+      } else {
+        window.location.reload();
+        document.innerHTML = data;
+      }
+    })
+    .catch((err) => {
+      console.log(err);
     });
   //   .then((user) => {
   //   if (user.token) {

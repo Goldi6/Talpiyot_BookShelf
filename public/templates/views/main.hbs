@@ -9,72 +9,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
      {{>General_style}}
-         <script src="../../script/header.js" type="module" defer></script>
-    {{!-- <script src="./script/getBooks.js" type="module" defer></script> --}}
+         {{!-- <script src="../../script/header.js" type="module" defer></script> --}}
+          <script src="../../script/handlebars-script/searchAndPagination.js" defer></script>
+                 <script src="../../script/handlebars-script/addBookToCart.js" type="module" defer></script>
+                
 
+    {{!-- <script src="./script/getBooks.js" type="module" defer></script> --}}
 
   
     <title>Book shelf</title>
 </head>
 <body>
-    <header></header>
+    <header>
+        {{>headerUser}}
+    </header>
     <main>
     {{>searchContainer}}
-    {{>bookSearch}}
+    {{>bookSearch_user}}
     {{>pagination}}
     </main>
 
 </body>
-
-
-
-<script>
-
-//pagination
-
-const searchBtn = document.getElementById("search-go");
-
-searchBtn.onclick = function(){
-const searchInput = document.getElementById("search-input");
-const booksAmountToShow = document.getElementById("show-number-of-books");
-//console.log(booksAmountToShow)
-const limit = booksAmountToShow.value;
-const searchFor = searchInput.value;
-
-
-const queries = `limit=${limit}&search=${searchFor}`;
-window.location.href = "http://localhost:3000/books/search?"+queries;
-
-
-}
-
-
-const pageNumbers = document.querySelectorAll(".page-num");
-for(const num of pageNumbers){
-    num.onclick=function(){
-        const page = num.getAttribute("data-query");
-        let url = new URL(window.location.href);
-        const cleanUrl = location.protocol + '//' + location.host + location.pathname;
-        let params = url.search;
-        console.log(params);
-        if(!params.includes("page")){
-            params+="&page="+page;
-        }else{
-            const regex = /page=\d*/;
-            params = params.replace(regex,`page=${page}`);
-        }
-
-        window.location.href = cleanUrl+params;
-
-    }
-}
-
-
-
-
-
-
-
-</script>
 </html>
 

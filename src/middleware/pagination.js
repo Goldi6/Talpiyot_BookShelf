@@ -1,4 +1,5 @@
 const paginatedResults = (model, isAdmin = false) => {
+  console.log("GETTING BOOKS");
   return async (req, res, next) => {
     const search = {};
     const options = { sort: { createdAt: 1 } };
@@ -34,7 +35,7 @@ const paginatedResults = (model, isAdmin = false) => {
 
     try {
       const books = await model.find(search, match, options);
-      //console.log(books);
+      // console.log(books);
 
       if (books.length > 0) {
         let page = 1;
@@ -71,20 +72,34 @@ const paginatedResults = (model, isAdmin = false) => {
         }
         result.pages = pages;
         req.paginatedBooks = result;
-        next();
+        return next();
       } else {
         if (isAdmin) {
-          return res.render("dashboard", {
-            username: req.user.username,
-            message: "No books to show ",
+          next({
+            status: 404,
+            message: "No books found",
+            name: "EmptyBooksData",
+            isAdmin: true,
           });
+
+          // return res.render("dashboard", {
+          //   username: req.user.username,
+          //   message: "No books in DataBase, please add Books",
+          // });
         }
-        return res
-          .status(404)
-          .send({ status: 404, message: "books not found" });
+        next({
+          status: 404,
+          message: "No books found according to your request",
+          name: "EmptyBooksData",
+          isAdmin: false,
+        });
+        // return res
+        //   .status(404)
+        //   .send({ status: 404, message: "books not found" });
       }
     } catch (err) {
-      res.status(500).send(err);
+      next(err);
+      //res.status(500).send(err);
     }
   };
 };

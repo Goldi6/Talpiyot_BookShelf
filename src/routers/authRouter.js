@@ -1,49 +1,35 @@
 //const { response, request } = require("express");
 const express = require("express");
 const User = require("../models/usersModel");
-const cookieParser = require("cookie-parser");
+//const cookieParser = require("cookie-parser");
 
 const router = express.Router();
 const auth = require("../middleware/authUser");
+const { verifyRequestFields } = require("../middleware/verifiers.js");
+const FILTERS = ["tokens", "cart"];
 
 ////
-const verifyFields = (body) => {
-  const wrongFields = [];
-  const keys = Object.keys(body);
-  let schema = Object.keys(User.schema.obj);
-  schema = schema.filter((el) => {
-    return el !== "tokens" && el !== "cart";
-  });
-  const verified = keys.every((el) => {
-    if (!schema.includes(el)) {
-      wrongFields.push(el);
-      return false;
+
+router.post(
+  "/users/new",
+  verifyRequestFields(User, FILTERS),
+  async (req, res, next) => {
+    console.log("HERE");
+    const user = new User(req.body);
+    console.log(user);
+    try {
+      await user.save();
+      console.log("LOG");
+      const token = await user.generateAuthToken();
+      res.cookie("userToken", token);
+      //TODO: remove token from response
+      res.status(201).send({ user, token });
+      //res.redirect("/user/books/search");
+    } catch (err) {
+      next(err);
     }
-    return true;
-  });
-  if (verified) return true;
-  else return wrongFields;
-};
-
-////
-
-router.post("/users/new", async (request, response) => {
-  const user = new User(request.body);
-  console.log(user);
-  try {
-    await user.save();
-    console.log("LOG");
-    const token = await user.generateAuthToken();
-    response.status(201).send({ user, token });
-  } catch (err) {
-    console.log(err);
-
-    response.status(400).send({
-      status: 400,
-      message: err,
-    });
   }
-});
+);
 
 router.get("/users/get", auth, async (req, res) => {
   try {
@@ -53,75 +39,83 @@ router.get("/users/get", auth, async (req, res) => {
   }
 });
 //TODO: update cart
-router.patch("/users/update", auth, async (req, res) => {
-  try {
-    const field_verify = verifyFields(req.body);
-    if (field_verify === true) {
-      //  console.log("HERE");
-      for (let update in req.body) {
-        req.user[update] = req.body[update];
-      }
-      await req.user.save();
+router.patch(
+  "/users/update",
+  auth,
+  verifyRequestFields(User, FILTERS),
+  async (req, res, next) => {
+    try {
+      const _id = req.user._id;
+      const user = await User.findOneAndUpdate({ _id }, req.body, {
+        new: true,
+        runValidators: true,
+      });
+      if (!user) next(user);
 
       return res.send(req.user);
-    } else {
-      return res.status(400).send({
-        status: 400,
-        message: "cannot update fields out of schema" + field_verify,
-      });
+    } catch (err) {
+      next(err);
     }
-  } catch (err) {
-    res.status(404).send({ status: 404, message: err.message });
   }
-});
+);
 
-router.delete("/users/delete", auth, async (req, res) => {
+router.delete("/users/delete", auth, async (req, res, next) => {
   try {
     await req.user.remove();
     res.send("user Deleted");
   } catch (err) {
-    res.status(500).send(err);
+    next(err);
   }
 });
 
-router.post("/users/login", async (req, res) => {
+router.post("/users/login", async (req, res, next) => {
   console.log("LOG");
 
   const { email, password } = req.body;
   try {
     const user = await User.findUserByEmailAndPassword(email, password);
-    console.log(user);
+    if (!user) {
+      next(user);
+    }
+    //console.log(user);
     const token = await user.generateAuthToken();
-    console.log(token);
+    res.cookie("userToken", token);
+    //console.log(token);
     res.send({ user, token });
   } catch (err) {
-    res.status(400).send({ status: 400, message: err.message });
+    next(err);
+    // res.status(400).send({ status: 400, message: err.message });
   }
 });
 
-router.get("/users/logout", auth, async (req, res) => {
+router.get("/users/logout", auth, async (req, res, next) => {
+  console.log("FERE");
+  req.user.tokens = req.user.tokens.filter(
+    (tokenDoc) => tokenDoc.token !== req.token
+  );
   try {
-    req.user.tokens = req.user.tokens.filter(
-      (tokenDoc) => tokenDoc.token !== req.token
-    );
     await req.user.save();
-    res.send({ status: 200, message: "user Logged out" });
+    res.clearCookie("userToken");
+    // let url = req.url;
+    // console.log(url);
+    res.redirect("/");
+    res.send("user Logged out");
   } catch (err) {
-    res.status(500).send(err);
+    next(err);
   }
 });
 
-router.post("/users/logoutAll", auth, async (req, res) => {
+router.post("/users/logoutAll", auth, async (req, res, next) => {
   try {
     req.user.tokens = [];
     await req.user.save();
     res.send();
   } catch (err) {
-    res.status(500).send(err);
+    next(err);
   }
 });
 
-router.get("/users/updateToken", auth, async (req, res) => {
+router.get("/users/updateToken", auth, async (req, res, next) => {
   try {
     const token = await req.user.generateAuthToken();
     req.user.tokens = req.user.tokens.filter(
@@ -129,7 +123,7 @@ router.get("/users/updateToken", auth, async (req, res) => {
     );
     res.send(token);
   } catch (error) {
-    res.status(500).send(err);
+    next(err);
   }
 });
 

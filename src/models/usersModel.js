@@ -12,15 +12,20 @@ const userSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
       validate(value) {
-        const regExp = /[a-zA-Z]+/;
-        if (!regExp.test(value))
-          throw new Error("Name should contain only letters");
+        console.log("validator");
+        const regExp = /^[a-zA-Z]+/;
+        if (!regExp.test(value)) throw new Error("should contain only letters");
       },
     },
     lastName: {
       type: String,
       trim: true,
-      default: "empty",
+      default: "",
+      validate(value) {
+        console.log("validator");
+        const regExp = /^[a-zA-Z]+/;
+        if (!regExp.test(value)) throw new Error("should contain only letters");
+      },
     },
     birthday: {
       type: Date,
@@ -49,7 +54,7 @@ const userSchema = new mongoose.Schema(
         //const regex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*.()])[A-Za-z\d!@#$%^&.*()]{8,}$/;
         if (!regex.test(value)) {
           throw new Error(
-            "password must contain at least 8 characters and include lower and uppercase letters and numbers"
+            "must contain at least 8 characters and include lower and uppercase letters and numbers"
           );
         }
       },
@@ -58,14 +63,14 @@ const userSchema = new mongoose.Schema(
       {
         book: {
           type: mongoose.Schema.Types.ObjectId,
-          required: true,
+          // required: true,
           ref: "Book",
           // unique: true,
         },
         quantity: {
           type: Number,
-          required: true,
-          default: 1,
+          //required: true,
+          //default: 1,
         },
       },
     ],
@@ -75,12 +80,11 @@ const userSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           //required: true,
           ref: "Book",
-          unique: true,
         },
         quantity: {
           type: Number,
           //required: true,
-          default: 1,
+          //default: 1,
         },
       },
     ],

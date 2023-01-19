@@ -1,0 +1,40 @@
+
+        <div id="books-container">
+            <div id="books">
+                
+               {{#if books}}
+
+                    {{#each books}}
+                    
+
+                        <div class="book">
+                            <figure>
+                               <a href="{{#if this.user}}/{{this.user}}{{/if}}/books/get/{{this._id}}"><img src="{{this.url}}" alt="book img"></a>
+      <figcaption>
+
+          <a href="/books/{{ this._id }}">{{this.name}}</a>
+      </figcaption>
+                            </figure>
+                            <div class="book-specs">
+                                
+                            <span>
+                                Price: {{this.price}}
+                            </span>
+                            </div>
+                            <div class="options">
+                            
+                           
+  <button  class="add-to-cart-btn" data-category="{{this.category}}" data-id="{{this._id}}"  data-price="{{this.price}}" data-name="{{this.name}}">add to cart</button>
+                                
+                            </div>
+                        </div>
+
+                    {{/each}}
+
+
+                {{/if}}
+            </div>
+
+
+        </div>
+            

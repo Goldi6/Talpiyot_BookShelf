@@ -74,7 +74,7 @@ const redirectByUserAuthentication = async (isLoginPage = true) => {
 const setupUsername = async (token, isAdmin = false) => {
   return await getUser(token, isAdmin)
     .then((user) => {
-      //console.log(user);
+      console.log(user);
 
       if (user !== undefined) {
         console.log(user);

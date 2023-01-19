@@ -1,0 +1,40 @@
+<div class="book">
+    
+{{#if book}}
+    <div id="book-preview" class="half">
+          
+    <h2>{{book.name}}</h2>
+    <figure>
+        <img style="height:400px" src="{{book.url}}" alt="{{
+    book.name}} + " picture"
+  }" style="width:100%">
+        <figcaption>
+            Written by {{book.author}}
+        </figcaption>
+    </figure>
+</div>
+
+<div id="book-specs" class="half">
+<div class="book-spec">
+     Price: <span>{{book.price}}$</span>
+    </div>
+    <div class="book-spec">
+        Name: <span>{{book.name}}</span>
+    </div>
+    <div class="book-spec">
+        Author: <span>{{book.author}}</span>
+    </div>
+          
+    <div class="book-description">
+            
+                {{book.description}}
+    </div>
+
+</div> 
+<div id="cart-actions">
+    <button data-id="{{book._id}}" class="add-book-to-cart">Add to Cart</button>
+</div>
+
+{{/if}}
+
+</div>

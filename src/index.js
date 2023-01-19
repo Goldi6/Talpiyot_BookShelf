@@ -1,21 +1,12 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 const cookieParser = require("cookie-parser");
-const hbs = require("hbs");
-hbs.registerHelper("equalsTo", function (value, equalsTo) {
-  return value == equalsTo;
-});
-hbs.registerHelper("getBirthday", function (fullDate) {
-  return value == equalsTo;
-});
+const { viewsPath } = require("./helpers/handlebars.js");
 // const { engine, create } = require("express-handlebars");
 
+const path = require("path");
 const publicDirectoryPath = path.join(__dirname, "../public");
-const viewsPath = path.join(__dirname, "../public/templates/views");
-const partialPath = path.join(__dirname, "../public/templates/partials");
 
-const port = process.env.PORT;
 require("./db/mongoose");
 const authRouter = require("./routers/authRouter");
 const bookRouter = require("./routers/bookRouter");
@@ -34,16 +25,25 @@ app.use(cookieParser());
 app.set("view engine", "hbs");
 app.set("views", viewsPath);
 
-hbs.registerPartials(partialPath);
-
 app.use(authRouter);
 app.use(bookRouter);
 app.use(cartRouter);
 app.use(adminRouter);
 app.use(pathRouter);
 
+const {
+  clientErrorHandler,
+  errorHandler,
+  errorLogger,
+} = require("./middleware/errorHandlers.js");
+
+app.use(errorLogger);
+app.use(clientErrorHandler);
+app.use(errorHandler);
+
 ////
 ////
+const port = process.env.PORT;
 
 app.listen(port, () => {
   console.log("connected on port: ", port);

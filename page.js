@@ -7,10 +7,8 @@ const router = new express.Router();
 
 const { verifyRequestFields } = require("../middleware/verifiers.js");
 const handlePaginatedBooks = require("../helpers/handlePaginatedBooks.js");
-const paginatedResults = require("../middleware/pagination.js");
-const authUser = require("../middleware/authUser.js");
 
-router.get("/books/get/:id", async (req, res, next) => {
+router.get("/books/:id", async (req, res, next) => {
   const _id = req.params["id"];
 
   try {
@@ -25,22 +23,7 @@ router.get("/books/get/:id", async (req, res, next) => {
     next(err);
   }
 });
-router.get("/user/books/get/:id", authUser, async (req, res, next) => {
-  const _id = req.params["id"];
-  const user = req.user;
-  console.log(user);
 
-  try {
-    const book = await Book.findById(_id);
-
-    if (!book) {
-      next(book);
-    }
-    res.render("bookPage", { book, user });
-  } catch (err) {
-    next(err);
-  }
-});
 router.post(
   "/admin/books/new",
   authAdmin,
@@ -103,25 +86,25 @@ router.patch(
 router.get(
   "/admin/books/search",
   authAdmin,
-  paginatedResults(Book, true),
-  async (req, res) => {
-    handlePaginatedBooks(res, req, true);
+  paginatedBooks(Book, true),
+  async (req, res, next) => {
+    try {
+      await handlePaginatedBooks(res, req, true);
+    } catch (err) {
+      next(err);
+    }
   }
 );
 
-router.get("/books/search", paginatedResults(Book), async (req, res, next) => {
-  handlePaginatedBooks(req, res);
-});
-router.get(
-  "/user/books/search",
-  authUser,
-  paginatedResults(Book),
-  async (req, res) => {
-    console.log("HERE");
-    console.log(req.user);
-    handlePaginatedBooks(req, res);
+router.get("/books/search", paginatedResults(Book), async (req, res) => {
+  //console.log("GGG");
+  try {
+    handlePaginatedBooks(res, req);
+  } catch (err) {
+    next(err);
   }
-);
+});
+
 // router.get("/books/get", async (req, res) => {
 //   const _id = req.query.id;
 
