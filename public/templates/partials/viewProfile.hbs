@@ -1,0 +1,46 @@
+{{#if (equalsTo user.role "Admin")}}
+
+<div class="data-block">
+  <span >
+      Username:
+  </span><span id="username">
+  {{user.username}}
+  </span>
+</div>
+{{else}}
+<div class="data-block">
+  <span >
+      First name:
+  </span><span id="f-name">
+  {{user.firstName}}
+  </span>
+</div>
+<div class="data-block">
+  <span >
+      Last name:
+  </span><span id="l-name">
+  {{user.lastName}}
+  </span>
+</div>
+{{/if}}
+
+
+
+
+
+{{#if user.birthday}}
+<div class="data-block">
+  <span>
+      Birthday:
+  </span><span id="birthday">
+  {{getBirthday user.birthday}}
+  </span>
+</div>
+{{/if}}
+<div class="data-block">
+  <span>
+      Email:
+  </span><span id="email">
+  {{user.email}}
+  </span>
+</div>

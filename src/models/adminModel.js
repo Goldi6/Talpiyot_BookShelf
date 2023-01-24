@@ -16,9 +16,9 @@ const adminSchema = new mongoose.Schema(
           throw new Error("Name should contain only letters");
       },
     },
-    Position: {
+    role: {
       type: String,
-      default: "Admin",
+      default: "admin",
     },
 
     birthday: {

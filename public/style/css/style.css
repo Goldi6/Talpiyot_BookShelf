@@ -292,3 +292,17 @@ main {
   font-size: 1.5rem;
   color: #aaa;
 }
+
+form input {
+  position: relative;
+}
+
+.form-error-message {
+  color: yellow;
+  font-size: small;
+  text-align: center;
+}
+
+input.error {
+  outline: yellow 1px solid;
+}

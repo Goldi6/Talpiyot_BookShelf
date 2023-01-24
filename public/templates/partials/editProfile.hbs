@@ -1,0 +1,49 @@
+
+
+
+
+{{#if (equalsTo user.role "Admin")}}
+<div class="data-block">
+<label for="edit-username">Username</label>
+<input type="text" placeholder="{{user.username}}" id="edit-username" name="username">
+</div>
+{{else}}
+
+<div class="data-block">
+<label for="edit-f-name">First name</label>
+<input type="text" placeholder="{{user.firstName}}" id="edit-first-name" name="firstName">
+</div>
+
+<div class="data-block">
+<label for="edit-l-name">Last name</label>
+<input type="text" placeholder="{{user.lastName}}" id="edit-last-name" name="lastName">
+</div>
+
+{{/if}}
+
+
+<div class="data-block">
+<label for="edit-birthday">Birthday</label>
+<input id="edit-birthday" type="date"
+name="birthday" {{#if user.birthday}}
+ placeholder="{{user.birthday}}"{{/if}}
+>
+</div>
+
+<div class="data-block">
+<label for="edit-email">Email</label>
+<input id="edit-email" type="email"
+name="email" placeholder="{{user.email}}">
+</div>
+
+</div>
+<div class="data-block">
+<label for="new-password">New password</label>
+<input type="password" id="edit-password"
+name="password">
+</div>
+<div class="data-block">
+<label for="password-repeat">Password repeat</label>
+<input type="password" id="password-repeat"
+name="Password repeat"
+>

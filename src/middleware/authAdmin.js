@@ -12,8 +12,11 @@ const authAdmin = async (req, res, next) => {
         _id: data._id,
         "tokens.token": token, //way of getting values from array in mongodb
       });
+      if (!user) {
+        res.clearCookie("token");
 
-      if (!user) return next(user);
+        return next(user);
+      }
 
       req.user = user;
       req.token = token;
@@ -23,6 +26,8 @@ const authAdmin = async (req, res, next) => {
       next({ name: "NoToken" });
     }
   } catch (err) {
+    res.clearCookie("token");
+
     next(err);
   }
 };

@@ -10,7 +10,7 @@
                     <div class="data">
                         
 
-                            {{>viewProfile_admin}}
+                            {{>viewProfile}}
                         
                     </div>
                 <div class="btn-block">
@@ -23,9 +23,9 @@
 
             </div>
             <div id="edit-profile" class="profile-block closed">
-                <form action="" class="user-data" id="edit-user-form">
+                <form action="" class="user-data" id="edit-user-form" data-type="{{#if (equalsTo user.role "Admin")}}admin{{else}}user{{/if}}">
                    <div class="data">
-                    {{>editProfile_admin}}
+                    {{>editProfile}}
                    </div>
                     
               

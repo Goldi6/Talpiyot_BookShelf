@@ -38,7 +38,6 @@ router.get("/users/get", auth, async (req, res) => {
     err.status(500).send(err);
   }
 });
-//TODO: update cart
 router.patch(
   "/users/update",
   auth,
@@ -50,9 +49,10 @@ router.patch(
         new: true,
         runValidators: true,
       });
-      if (!user) next(user);
+      if (!user) return next(user);
+      console.log(user);
 
-      return res.send(req.user);
+      return res.send(user);
     } catch (err) {
       next(err);
     }
@@ -89,7 +89,7 @@ router.post("/users/login", async (req, res, next) => {
 });
 
 router.get("/users/logout", auth, async (req, res, next) => {
-  console.log("FERE");
+  console.log("LOGOUT");
   req.user.tokens = req.user.tokens.filter(
     (tokenDoc) => tokenDoc.token !== req.token
   );

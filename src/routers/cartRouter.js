@@ -21,7 +21,8 @@ router.get("/users/cart/get", authUser, async (req, res, next) => {
       next(err);
     }
   } else {
-    next({ name: "emptyCart", message: "cart is empty", status: 404 });
+    res.send({ cart: [] });
+    //next({ name: "emptyCart", message: "cart is empty", status: 404 });
   }
 });
 
@@ -49,7 +50,7 @@ router.post(
       }
 
       if (!updated) {
-        cart.push({ book: bookId });
+        cart.push({ book: bookId, quantity: 1 });
       }
       try {
         await req.user.save();
@@ -95,7 +96,7 @@ router.patch(
   async (req, res, next) => {
     // "status 204" does not return response and does not need to redirect. successful resource created!
     const id = req.params["id"];
-    const updated = false;
+    let updated = false;
     if (req.query.quantity) {
       for (const book of req.user.cart) {
         if (book.book == id) {
@@ -133,9 +134,9 @@ router.patch(
 
 router.patch("/users/cart/buy", authUser, async (req, res, next) => {
   // "status 204" does not return response and does not need to redirect. successful resource created!
-
+  console.log("CART ROUTE");
   const cart = [...req.user.cart];
-  // console.log(cart);
+  console.log(cart);
   if (cart.length > 0) {
     req.user.cart = [];
     req.user.ordered.push(...cart);
@@ -155,7 +156,7 @@ router.patch("/users/cart/buy", authUser, async (req, res, next) => {
 });
 
 //get items to local cart
-router.post("/cart/getItems", async (req, res) => {
+router.post("/cart/getItems", async (req, res, next) => {
   const cart = req.body;
   try {
     for (el of cart) {

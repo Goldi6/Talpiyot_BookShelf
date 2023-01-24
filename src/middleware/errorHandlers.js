@@ -2,10 +2,10 @@ const jwt = require("jsonwebtoken");
 
 const errorLogger = (err, req, res, next) => {
   console.log("ERROR HANDLER");
-
   console.log(err.name);
   console.log(err.message);
   console.log(Object.keys(err));
+  console.log(err.reason);
   console.log("END");
   next(err);
   //console.log(err.code);
@@ -64,11 +64,13 @@ const clientErrorHandler = (err, req, res, next) => {
   ///
   ///
   if (err.name === "CastError") {
+    console.log("INSIDE cAST ERR");
     const message =
-      "The book might no longer exist in the store or the requested id might be wrong.";
-    const clientError = new EmptyDataError(message);
+      "The book might no longer exist in the store or the request might be wrong.";
+    //const clientError = new EmptyDataError(message);
+    const error = { message };
 
-    res.render("404", { clientError });
+    return res.render("404", { error });
   }
   ///
   ///
@@ -88,6 +90,9 @@ const clientErrorHandler = (err, req, res, next) => {
         const cutIndex = reason.indexOf(")");
         reason = reason.slice(cutIndex + 2);
         console.log(reason);
+      }
+      if (reason.includes("is required")) {
+        reason = "is required";
       }
 
       let errObject = { path, reason };
@@ -140,11 +145,9 @@ const clientErrorHandler = (err, req, res, next) => {
 
   if (err instanceof jwt.TokenExpiredError) {
     clientError = new AuthError("Expired Token, please log in.");
-    res.clearCookie("token");
   }
   if (err instanceof jwt.JsonWebTokenError) {
     clientError = new AuthError("Invalid Token, try to log in.");
-    res.clearCookie("token");
   }
 
   if (clientError instanceof AuthError) {
@@ -170,11 +173,6 @@ const clientErrorHandler = (err, req, res, next) => {
     return res.send(clientError);
   }
 
-  ///js
-
-  //console.log(err.stack);
-  //some logic to figure which kind of Error is it.
-  //new CustomError(error);
   next(err);
 };
 
@@ -184,6 +182,7 @@ const errorHandler = (err, req, res, next) => {
     return next(err);
   }
   res.status(500).send("Internal error");
+  res.render("404", { error: { message: "internal server problem" } });
   // res.render("error", { error: err });
 };
 

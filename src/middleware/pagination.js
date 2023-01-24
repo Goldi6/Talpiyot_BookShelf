@@ -35,7 +35,6 @@ const paginatedResults = (model, isAdmin = false) => {
 
     try {
       const books = await model.find(search, match, options);
-      // console.log(books);
 
       if (books.length > 0) {
         let page = 1;
@@ -54,6 +53,9 @@ const paginatedResults = (model, isAdmin = false) => {
         const result = {};
 
         result.booksPage = books.slice(startIndex, endIndex);
+        console.log("THIS BOOKS PAGE");
+        //console.log(result.booksPage);
+
         result.limit = limit;
         const pages = { current: page };
 

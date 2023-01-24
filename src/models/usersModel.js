@@ -6,6 +6,11 @@ const Book = require("./booksModel");
 
 const userSchema = new mongoose.Schema(
   {
+    role: {
+      type: String,
+      required: true,
+      default: "user",
+    },
     firstName: {
       type: String,
       required: true,
@@ -13,7 +18,7 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       validate(value) {
         console.log("validator");
-        const regExp = /^[a-zA-Z]+/;
+        const regExp = /^[a-zA-Z]+$/;
         if (!regExp.test(value)) throw new Error("should contain only letters");
       },
     },

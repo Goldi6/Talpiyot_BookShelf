@@ -27,10 +27,14 @@ legend{
 form{
     display: grid;
     place-items: center;
+
 }
 input{
     padding: 0.5rem;
     text-align: center;
+    &.error{
+        outline: orange;
+    }
 }
 h1{
     border-bottom: 1px solid white;
@@ -57,4 +61,18 @@ h1{
 
 #register-form{
     display: none;
+}
+
+form input{
+    position: relative;
+}
+
+.form-error-message{
+    color : yellow;
+    font-size : small;
+    text-align : center;
+
+}
+input.error{
+    outline: yellow 1px solid;
 }

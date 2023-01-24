@@ -1,3 +1,5 @@
+import { formErrHandler } from "../form_errorHandler.js";
+
 const loginForm = document.getElementById("admin-login");
 
 loginForm.onsubmit = function (e) {
@@ -31,20 +33,17 @@ loginForm.onsubmit = function (e) {
     .then((data) => {
       console.log(data);
       if (data.status) {
-        const message = data.errorObjects[0].reason;
-        console.log(message);
-        const err = new Error(message);
-        err.name = data.name;
-        throw err;
-        // console.log(data.name);
+        formErrHandler(data, form);
       } else {
         window.location.reload();
-        document.innerHTML = data;
+        //document.innerHTML = data;
       }
     })
     .catch((err) => {
-      console.log(err);
+      formErrHandler(err, form);
     });
+
+  //alert("Login Error!");
   //   .then((user) => {
   //   if (user.token) {
   //     setToken(user.token);

@@ -1,3 +1,6 @@
+import { showActionMessage } from "../../modules/actionMessage.js";
+import { formErrHandler } from "../../form_errorHandler.js";
+
 const addBtn = document.querySelector("#add-book-btn");
 addBtn.onclick = function () {
   const modal = document.getElementById("modal");
@@ -11,17 +14,20 @@ addBtn.onclick = function () {
 
   uploadBtn.onclick = function (e) {
     e.preventDefault();
-    const data = getFormData(document.getElementById("update-form"));
+    const form = document.getElementById("update-form");
+
+    const data = getFormData(form);
     console.log(data);
     uploadNewBook(data)
       .then((context) => {
-        if (context.errors) {
-          alert("please fill out all the required fields!");
+        if (context.status) {
+          formErrHandler(context, form);
+          //alert("please fill out all the required fields!");
         } else {
           console.log(context);
-          const form = document.getElementById("update-form");
           form.reset();
-          alert("Book Added!");
+          showActionMessage("Book Added!");
+          //alert("Book Added!");
         }
         //window.location.reload();
         console.log(context);
@@ -124,9 +130,11 @@ for (const btn of editButtons) {
         .then((book) => {
           console.log(book);
           if (book._id) {
-            alert("updated!");
+            showActionMessage("Book Updated!");
+            //alert("updated!");
           } else {
-            alert("error!");
+            formErrHandler(book, document.getElementById("update-form"));
+            //alert("error!");
           }
         });
     });
@@ -139,10 +147,13 @@ for (const btn of editButtons) {
         .then((book) => {
           console.log(book);
           if (book._id) {
-            alert("deleted!");
+            showActionMessage("Book Deleted!");
+            // alert("deleted!");
             window.location.reload();
           } else {
-            alert("error!");
+            //TODO HANDLE UI ERROR
+
+            alert("unable to delete !!!");
             window.location.reload();
           }
         });
@@ -183,15 +194,15 @@ const contextTemplateUpdate = (
   const template = `<div id="book-modal">
                <button id="close-modal">X</button>
                <form id="update-form"action="">
-                   <label for="">* Book Name: <input type="text" id="name" value="${context.name}"></label>
-           <label for="">* Author:<input type="text" id="author" value="${context.author}"></label>
-           <label for="">Category:<input type="text" id="category" value="${context.category}"></label>
-           <label for="">* Img url: <input type="text" id="url" value="${context.url}"></label>
-           <label for="">* Price: <input type="number" id="price" value="${context.price}"></label>
-                       <label for="">* Quantity: <input type="number" id="quantity" value="${context.quantity}"></label>
+                   <label for="">* Book Name: <input type="text" id="name" name="name" value="${context.name}"></label>
+           <label for="">* Author:<input type="text" id="author" name="author" value="${context.author}"></label>
+           <label for="">Category:<input type="text" id="category" name="category" value="${context.category}"></label>
+           <label for="">* Img url: <input type="text" id="url" name="url" value="${context.url}"></label>
+           <label for="">* Price: <input type="number" id="price" name="price" value="${context.price}"></label>
+                       <label for="">* Quantity: <input type="number" id="quantity" name="quantity" value="${context.quantity}"></label>
 
            <label for="">* Description:</label>
-           <textarea name="" id="description" cols="30" rows="10" >${context.description}</textarea>
+           <textarea name="" id="description" name="description" cols="30" rows="10" >${context.description}</textarea>
 
                <button id="submit-update" type="submit" data-id="${context.id}">Update</button>
                <button id="submit-delete" type="submit" data-id="${context.id}">Delete</button>
@@ -206,14 +217,14 @@ const contextTemplateAddNew = () => {
   const template = `<div id="book-modal">
                <button id="close-modal">X</button>
                <form id="update-form"action="">
-                   <label for="">* Book Name: <input type="text" id="name" value=""></label>
-           <label for="">* Author:<input type="text" id="author" value=""></label>
-           <label for="">Category:<input type="text" id="category" value=""></label>
-           <label for="">* Img url: <input type="text" id="url" value=""></label>
-           <label for="">* Price: <input type="number" id="price" value=""></label>
-           <label for="">* Quantity: <input type="number" id="quantity" value=""></label>
+                   <label for="">* Book Name: <input type="text" id="name" value="" name="name"></label>
+           <label for="">* Author:<input type="text" id="author" value="" name="author"></label>
+           <label for="">Category:<input type="text" id="category" name="category" value=""></label>
+           <label for="">* Img url: <input type="text" id="url" name="url" value=""></label>
+           <label for="">* Price: <input type="number" id="price" name="price" value=""></label>
+           <label for="">* Quantity: <input type="number" id="quantity" name="quantity" value=""></label>
            <label for="">* Description:</label>
-           <textarea name="" id="description" cols="30" rows="10" >Add book description...</textarea>
+           <textarea name="" name="quantity" id="description" cols="30" rows="10" >Add book description...</textarea>
 
                <button id="submit-upload" type="submit" >Upload</button>
 

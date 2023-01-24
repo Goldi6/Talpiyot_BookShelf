@@ -3,15 +3,16 @@ const cookieParser = require("cookie-parser");
 const adminAuth = require("../middleware/authAdmin");
 const authAdmin = require("../middleware/authAdmin");
 const authUser = require("../middleware/authUser");
+const { render } = require("sass");
 
 const router = express.Router();
 
 //TODO: check this
 router.get("/cart", function (req, res) {
-  let loggedIn = false;
-
-  if (loggedIn) res.redirect("/cart/cart.html");
-  else res.redirect("/admin/cart.html");
+  res.render("cart", { user: req.user });
+});
+router.get("/user/cart", authUser, function (req, res) {
+  res.render("cart", { user: req.user });
 });
 
 // router.get("/book/:bookId", async function (req, res) {
@@ -45,19 +46,6 @@ router.get("/admin/login", async (req, res, next) => {
   res.render("adminLogin");
 });
 
-router.get("/admin/profile", authAdmin, async (req, res, next) => {
-  try {
-    const username = req.user.username;
-    //console.log(username);
-    res.cookie("token", req.token);
-    //     res.cookie("username", req.user.username);
-    res.render("profile", { username, user: req.user });
-    // res.render("dashboard", { username: req.user.username });
-  } catch (err) {
-    next(err);
-  }
-});
-
 router.get("/", async (req, res, next) => {
   try {
     res.redirect("/user/books/search");
@@ -83,6 +71,28 @@ router.get("/login", async (req, res, next) => {
   // }
 
   res.render("userLogin");
+});
+
+router.get("/user/profile", authUser, async (req, res, next) => {
+  try {
+    console.log("USER PROFILE");
+    const user = req.user;
+    res.cookie("userToken", req.token);
+
+    res.render("userProfile", { user });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/admin/profile", authAdmin, async (req, res, next) => {
+  try {
+    const user = req.user;
+    res.cookie("token", req.token);
+    res.render("userProfile", { user });
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

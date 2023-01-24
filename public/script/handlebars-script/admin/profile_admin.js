@@ -1,3 +1,5 @@
+import { showActionMessage } from "../modules/actionMessage.js";
+
 const viewProfile = document.getElementById("view-profile");
 const editProfile = document.getElementById("edit-profile");
 const updateForm = document.getElementById("edit-user-form");
@@ -29,7 +31,7 @@ updateForm.onsubmit = function (e) {
   const closeModalBtn = document.getElementById("close-submit-modal-btn");
   console.log(closeModalBtn);
 
-  const dataToUpdate = gatherData(e.target);
+  const dataToUpdate = gatherData(form);
   if (!Array.isArray(dataToUpdate)) {
     alert(dataToUpdate);
   } else {
@@ -109,25 +111,26 @@ function gatherData(form) {
 const submitUpdate = async (data) => {
   console.log(data);
 
-  updateUserData(data).then((data) => {
+  updateUserData(data, "/admin/update").then((data) => {
     console.log(data);
 
     if (data !== undefined) {
       if (data.status) {
-        alert(data.message);
+        //TODO: HANDLE ERROR
+        alert(data);
       } else {
-        alert("data updated!!!");
-        window.location.replace(window.location.href);
+        showActionMessage("data updated!!!");
+        // window.location.replace(window.location.href);
         //location.reload();
       }
     }
   });
 };
-const updateUserData = async (data) => {
+const updateUserData = async (data, url) => {
   const headers = new Headers({
     "Content-Type": "application/json",
   });
-  return await fetch("/admin/update", {
+  return await fetch(url, {
     method: "PATCH",
     headers,
     body: JSON.stringify(data),
@@ -135,7 +138,9 @@ const updateUserData = async (data) => {
     .then((response) => {
       return response.json();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(JSON.stringify(err));
+    });
 };
 
 const getUpdateModalHtml = (viewData) => {

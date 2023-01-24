@@ -105,7 +105,7 @@ router.get(
   authAdmin,
   paginatedResults(Book, true),
   async (req, res) => {
-    handlePaginatedBooks(res, req, true);
+    handlePaginatedBooks(req, res, true);
   }
 );
 
@@ -118,7 +118,7 @@ router.get(
   paginatedResults(Book),
   async (req, res) => {
     console.log("HERE");
-    console.log(req.user);
+    //console.log(req.user);
     handlePaginatedBooks(req, res);
   }
 );

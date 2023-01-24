@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../style/css/login.css">
-     <script src="../../script/auth.js" type="module" defer></script>
+     
+     <script src="../../script/handlebars-script/auth.js" type="module" defer></script>
+        
         <script src="../../script/login_swichForm.js" defer></script>
     <title>BookShelf Login</title>
 </head>
@@ -23,8 +25,8 @@
                 <br>
                 <fieldset>
                     <legend>Login</legend>
-                    <input  type="email" placeholder="email@email.com" id="login_inp-email" required>
-                    <input type="password" placeholder="password" id="login_inp-password" required>
+                    <input  type="email" placeholder="email@email.com" id="login_inp-email" required name="email">
+                    <input type="password" placeholder="password" id="login_inp-password" name="password" required>
                     <input type="submit" value="Login!" >
                 </fieldset>
             </form>
@@ -33,15 +35,15 @@
                 <br>
                 <fieldset>
                     <legend>Register</legend>
-                    <input type="text" placeholder="first name" id="register_inp-firstname">
-                    <input type="text" placeholder="last name" id="register_inp-lastname">
+                    <input type="text" placeholder="first name" id="register_inp-firstname" name="firstName">
+                    <input type="text" placeholder="last name" id="register_inp-lastname" name="lastName">
                     <!-- <div> -->
                         <!-- <label for="reg_birthday">Birthday</label> -->
-                        <input type="date" id="register_inp-date">
+                        <input type="date" id="register_inp-birthday" name="birthday">
                     <!-- </div> -->
-                    <input type="email" placeholder="email@email.com" id="register_inp-email" required>
-                    <input type="password" placeholder="password" id="register_inp-password1" required>
-                    <input type="password" placeholder="repeat password" id="register_inp-password2" required>
+                    <input type="email" name="email" placeholder="email@email.com" id="register_inp-email" required>
+                    <input type="password" placeholder="password" name="password"id="register_inp-password" required>
+                    <input name="password2" type="password" placeholder="repeat password" id="register_inp-password2" required>
                     <input type="submit" value="register!" >
     
                 </fieldset>

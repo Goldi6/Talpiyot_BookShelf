@@ -1,4 +1,4 @@
-import { addToCart } from "../../script/modules/cartActions.js";
+import { addToCart } from "./modules/cartActions.js";
 //add To cart
 
 const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");

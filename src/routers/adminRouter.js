@@ -30,20 +30,29 @@ router.get("/admin/get", auth, async (req, res, next) => {
     next(err);
   }
 });
-//TODO: update cart
 router.patch(
   "/admin/update",
   auth,
   verifyRequestFields(Admin, FILTER),
   async (req, res, next) => {
     try {
-      const _id = req.user_id;
-      const user = await Admin.findByIdAndUpdate(_id, req.body);
+      console.log(req.body);
+      const _id = req.user._id;
+      console.log(_id);
 
-      if (!user) next(user);
+      const user = await Admin.findOneAndUpdate({ _id }, req.body, {
+        new: true,
+        runValidators: true,
+      });
 
-      res.send(req.user);
+      console.log(user);
+      if (user) {
+        return res.send(user);
+      }
+      next(user);
     } catch (err) {
+      console.log("CATCH");
+      console.log(err);
       next(err);
     }
   }
@@ -71,13 +80,14 @@ router.post("/admin/login", async (req, res, next) => {
     const token = await user.generateAuthToken();
 
     res.cookie("token", token);
-    res.render("dashboard", { username: user.username });
+    res.render("main", { username: user.username });
   } catch (err) {
     next(err);
   }
 });
 
-router.post("/admin/logout", auth, async (req, res, next) => {
+router.get("/admin/logout", auth, async (req, res, next) => {
+  console.log("LOGOUT");
   console.log(req.user);
 
   req.user.tokens = req.user.tokens.filter(
@@ -85,7 +95,7 @@ router.post("/admin/logout", auth, async (req, res, next) => {
   );
   try {
     await req.user.save();
-    res.clearCookie("token").render("adminLogin");
+    res.clearCookie("token").redirect("/admin");
   } catch (err) {
     next(err);
   }

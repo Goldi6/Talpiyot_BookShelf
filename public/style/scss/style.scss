@@ -344,8 +344,18 @@ text-decoration: underline;        }
 
     }
 }
+form input{
+    position: relative;
+}
 
+.form-error-message{
+    color : yellow;
+    font-size : small;
+    text-align : center;
 
-
+}
+input.error{
+    outline: yellow 1px solid;
+}
 
 

@@ -1,24 +1,13 @@
 import { postAuth } from "./modules/loginAndRegistration.js";
-import { redirectByUserAuthentication } from "./modules/User_dataGetters.js";
-import { errorHandler } from "./errorHandle.js";
+import { formErrHandler } from "./form_errorHandler.js";
 /////////////////////////
-window.onload = function () {
-  redirectByUserAuthentication();
-};
+
 /////////////////////////
 
 //////////////////////////
 
 const loginForm = document.getElementById("login-form");
 const registerForm = document.getElementById("register-form");
-
-function setToken(token, user) {
-  localStorage.setItem("token", token);
-}
-function welcome(user) {
-  alert(user.firstName + " logged in!");
-  window.location.replace("http://localhost:3000");
-}
 
 registerForm.onsubmit = function (e) {
   e.preventDefault();
@@ -28,13 +17,13 @@ registerForm.onsubmit = function (e) {
   const firstName = document.getElementById("register_inp-firstname").value;
   const lastName = document.getElementById("register_inp-lastname").value;
 
-  const birthday = form.querySelector("input[type='date']").value;
+  const birthday = form.querySelector("#register_inp-birthday").value;
   // let age = new Date() - new Date(date).getTime();
   // age = new Date(age);
   // age = age.getUTCFullYear();
   // age = Math.abs(age - 1970);
 
-  const password1 = form.querySelector("#register_inp-password1").value;
+  const password1 = form.querySelector("#register_inp-password").value;
   const password2 = form.querySelector("#register_inp-password2").value;
 
   if (password1 === password2) {
@@ -43,19 +32,26 @@ registerForm.onsubmit = function (e) {
     console.log(data);
     console.log();
 
-    postAuth("http://localhost:3000/users/new", data).then((user) => {
-      console.log(user);
-      if (user.token) {
-        setToken(user.token);
-        welcome(user.user);
-      } else {
-        const message = user.message;
-        alert(message);
-        errorHandler(user);
-      }
-    });
+    postAuth("http://localhost:3000/users/new", data)
+      .then((user) => {
+        //console.log(user);
+        if (user.user) {
+          //setToken(user.token);
+          //welcome(user.user);
+          window.location.replace("/");
+        } else {
+          formErrHandler(user, form);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   } else {
-    console.log("password error");
+    //TODO:
+    const errObj = [{ path: "password", reason: "passwords don't match" }];
+    const err = { name: validationFailed, errorObjects: errObj };
+
+    formErrHandler(err, form);
   }
 };
 loginForm.onsubmit = function (e) {
@@ -69,19 +65,15 @@ loginForm.onsubmit = function (e) {
   postAuth("http://localhost:3000/users/login", data).then((user) => {
     console.log(user);
     if (user.status) {
-      const message = user.errorObjects[0].reason;
-      alert(message);
-      errorHandler(user);
+      formErrHandler(user, form);
     } else {
-      console.log(document.cookie);
+      //console.log(document.cookie);
       console.log(user);
-      console.log("!!!");
-      if (user.token) {
-        setToken(user.token);
-        welcome(user.user);
-      } else {
-        const message = user.message;
-        alert(message);
+
+      if (user.user) {
+        //setToken(user.token);
+        // welcome(user.user);
+        window.location.replace("/");
       }
     }
   });
