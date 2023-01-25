@@ -176,7 +176,7 @@ const clientErrorHandler = (err, req, res, next) => {
   next(err);
 };
 
-const internalErrorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, next) => {
   //will get syntax errors
   if (res.headersSent) {
     return next(err);
@@ -186,4 +186,4 @@ const internalErrorHandler = (err, req, res, next) => {
   // res.render("error", { error: err });
 };
 
-module.exports = { errorLogger, clientErrorHandler, internalErrorHandler };
+module.exports = { errorLogger, clientErrorHandler, errorHandler };

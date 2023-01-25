@@ -36,13 +36,13 @@ app.use(pathRouter);
 
 const {
   clientErrorHandler,
-  errorHandler,
+  internalErrorHandler,
   errorLogger,
 } = require("./middleware/errorHandlers.js");
 
 app.use(errorLogger);
 app.use(clientErrorHandler);
-app.use(errorHandler);
+app.use(internalErrorHandler);
 
 ////
 ////
