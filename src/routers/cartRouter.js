@@ -16,6 +16,10 @@ router.get("/users/cart/get", authUser, async (req, res, next) => {
   if (user.cart.length > 0) {
     try {
       await user.populate("cart.book");
+      user.cart = user.cart.filter((cartElement) => {
+        if (cartElement.book === null) return false;
+        return true;
+      });
       return res.send(user.cart);
     } catch (err) {
       next(err);
@@ -64,30 +68,25 @@ router.post(
   }
 );
 
-router.delete(
-  "/users/cart/delete/:id",
-  authUser,
-  verifyId(Book),
-  async (req, res, next) => {
-    // "status 204" does not return response and does not need to redirect. successful resource created!
+router.delete("/users/cart/delete/:id", authUser, async (req, res, next) => {
+  // "status 204" does not return response and does not need to redirect. successful resource created!
+  const bookId = req.params["id"];
+  console.log("Book ID:", bookId);
+  //console.log(bookId);
 
-    const bookId = req.params["id"];
-    //console.log(bookId);
+  const books = req.user.cart;
+  //let updated = false;
 
-    const books = req.user.cart;
-    //let updated = false;
-
-    req.user.cart = books.filter((el) => {
-      return el.book != bookId;
-    });
-    try {
-      await req.user.save();
-      res.send(req.user.cart);
-    } catch (err) {
-      next(err);
-    }
+  req.user.cart = books.filter((el) => {
+    return el.book != bookId;
+  });
+  try {
+    await req.user.save();
+    res.send(req.user.cart);
+  } catch (err) {
+    next(err);
   }
-);
+});
 
 router.patch(
   "/users/cart/update/:id",
