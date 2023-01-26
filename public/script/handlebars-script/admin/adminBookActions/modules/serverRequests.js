@@ -2,7 +2,7 @@ const uploadNewBook = async (data) => {
   const headers = new Headers({
     "Content-Type": "application/json",
   });
-  const path = `/admin/books/new`;
+  const path = `/admin/books`;
   return await fetch(path, {
     method: "POST",
     body: JSON.stringify(data),
@@ -21,7 +21,7 @@ const updateBook = async (data, id) => {
   const headers = new Headers({
     "Content-Type": "application/json",
   });
-  const path = `/admin/books/update/${id}`;
+  const path = `/admin/books/${id}`;
   return await fetch(path, {
     method: "PATCH",
     body: JSON.stringify(data),
@@ -36,7 +36,7 @@ const updateBook = async (data, id) => {
 };
 
 const deleteBook = async (id) => {
-  const path = `/admin/books/delete/${id}`;
+  const path = `/admin/books/${id}`;
   return await fetch(path, {
     method: "DELETE",
   })

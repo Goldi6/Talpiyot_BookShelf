@@ -1,13 +1,14 @@
 import { deleteItemFromCart, updateItemInCart } from "./cartActions.js";
 
 const cartHtmlElements = (items) => {
+  console.log(items);
   let total = 0;
 
   let html = items.map((el) => {
     const quantity = el.quantity;
-    el = el.book;
+    const book = el.book;
 
-    total += parseInt(quantity) * parseInt(el.price);
+    total += parseInt(quantity) * parseInt(book.price);
 
     /////
     /////
@@ -15,10 +16,10 @@ const cartHtmlElements = (items) => {
     item.classList.add("item");
     const html = `<div class="item-specs">
 
-      <span class="cart-item-name pointer" data-id="${el.id}">
-          <a href="/books/book?id=${el._id}">
-              <img src="${el.url}" style="width:25px">
-              <span>${el.name}</span>
+      <span class="cart-item-name pointer" data-id="${el._id}">
+          <a href="/books/${book._id}">
+              <img src="${book.url}" style="width:25px">
+              <span>${book.name}</span>
           </a>
       
       
@@ -26,7 +27,7 @@ const cartHtmlElements = (items) => {
 
 
       <span class="cart-item-price">
-      ${el.price} $
+      ${book.price} $
        </span>
 
       <div class="counter">
@@ -45,7 +46,7 @@ const cartHtmlElements = (items) => {
 
 
       <span class="cart-item-price">
-          ${el.price * quantity} $
+          ${book.price * quantity} $
       </span>
   </div>`;
 
@@ -59,7 +60,7 @@ const cartHtmlElements = (items) => {
       const id = e.target.getAttribute("data-id");
       deleteItemFromCart(e, id);
     });
-    item.setAttribute("data-id", el._id);
+    // item.setAttribute("data-id", el._id);
 
     item.append(delBtn);
 
