@@ -158,17 +158,22 @@ router.patch("/users/cart/buy", authUser, async (req, res, next) => {
 //get items to local cart
 router.post("/cart/getItems", async (req, res, next) => {
   const cart = req.body;
+  console.log(cart);
   try {
     for (el of cart) {
-      const book = await Book.findById(el.id);
+      console.log(el, "NEXT:");
+      let book = await Book.findById(el.id);
+      console.log("HH");
       if (!book) {
-        el.book.name = "item not found";
-        el.book.price = 0;
+        book = {};
+        book.name = "item not found";
+        book.price = 0;
+        book._id = el.id;
       }
+      console.log("BOOK:");
       console.log(book);
       el.book = book;
     }
-    // console.log(cart);
     res.send(cart);
   } catch (err) {
     next(err);

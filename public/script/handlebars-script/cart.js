@@ -1,5 +1,5 @@
 import { getUserCart } from "./modules/getUserCart.js";
-import { userCheckOut, getLocalCart, checkOut } from "./modules/cartActions.js";
+import { getLocalCart, checkOut } from "./modules/cartActions.js";
 import { getCookie } from "./modules/cookies.js";
 import { setupCartItems } from "./modules/cart-helpers.js";
 // import { verifyModal } from "./modules/verifyPurchase.js";
