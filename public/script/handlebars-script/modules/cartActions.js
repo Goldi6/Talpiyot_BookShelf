@@ -187,7 +187,7 @@ const updateItemInCart = (e, bookId, action) => {
     quantity = parseInt(quantity);
     quantity = action == "+" ? quantity + 1 : quantity - 1;
 
-    if (quantity >= 0) {
+    if (quantity > 0) {
       updateItemInUserCart(bookId, quantity).then(() => {
         window.location.reload();
       });
@@ -202,7 +202,7 @@ const updateItemInCart = (e, bookId, action) => {
           el.quantity++;
           window.location.reload();
         } else {
-          if (el.quantity > 0) {
+          if (el.quantity > 1) {
             el.quantity--;
             window.location.reload();
           }
