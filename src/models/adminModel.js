@@ -115,7 +115,8 @@ adminSchema.methods.toJSON = function () {
   const user = this;
   const userObj = user.toObject();
   delete userObj.password;
-  // delete userObj.tokens;
+  delete userObj.tokens;
+  delete userObj.__v;
 
   return userObj;
 };

@@ -44,13 +44,13 @@ const bookSchema = new mongoose.Schema(
   }
 );
 
-// bookSchema.methods.toJSON = function () {
-//   const book = this;
-//   const bookObj = book.toObject();
-//   delete bookObj.quantity;
+bookSchema.methods.toJSON = function () {
+  const book = this;
+  const bookObj = book.toObject();
+  delete bookObj.__v;
 
-//   return bookObj;
-// };
+  return bookObj;
+};
 
 const Book = mongoose.model("Book", bookSchema);
 
