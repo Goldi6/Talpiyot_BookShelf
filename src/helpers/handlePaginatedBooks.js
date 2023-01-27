@@ -1,6 +1,4 @@
 const handlePaginatedBooks = (req, res, isAdmin = false) => {
-  console.log("ENTER PAGINATED BOOKS HANDLER");
-  //console.log(req.paginatedBooks);
   const books = req.paginatedBooks.booksPage;
   const pages = req.paginatedBooks.pages;
   const limit = req.paginatedBooks.limit;
@@ -8,7 +6,6 @@ const handlePaginatedBooks = (req, res, isAdmin = false) => {
   if (req.query.search) {
     search = req.query.search;
   }
-  //console.log(req.user);
 
   if (req.user) {
     const user = req.user;

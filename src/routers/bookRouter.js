@@ -25,8 +25,6 @@ router.get(
   authUser,
   paginatedResults(Book),
   async (req, res) => {
-    console.log("HERE");
-    //console.log(req.user);
     handlePaginatedBooks(req, res);
   }
 );

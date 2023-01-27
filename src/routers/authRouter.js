@@ -18,7 +18,7 @@ router.post("/users/login", async (req, res, next) => {
     if (!user) {
       return next(user);
     }
-    //console.log(user);
+    console.log(user);
     const token = await user.generateAuthToken();
     res.cookie("userToken", token);
     //console.log(token);
@@ -33,12 +33,10 @@ router.post(
   "/users",
   verifyRequestFields(User, FILTERS),
   async (req, res, next) => {
-    console.log("HERE");
     const user = new User(req.body);
-    console.log(user);
     try {
       await user.save();
-      console.log("LOG");
+
       const token = await user.generateAuthToken();
       res.cookie("userToken", token);
       //TODO: remove token from response
