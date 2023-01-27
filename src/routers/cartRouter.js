@@ -4,60 +4,47 @@ const Book = require("../models/booksModel");
 
 const router = express.Router();
 const authUser = require("../middleware/authUser");
-const {
-  verifyRequestFieldsInArray,
-  verifyId,
-} = require("../middleware/verifiers.js");
+const { verifyId } = require("../middleware/verifiers.js");
 
 //TODO: cart handlebar
 router.get("/users/cart", authUser, async (req, res, next) => {
-  const user = req.user;
-
-  if (user.cart.length > 0) {
-    try {
+  try {
+    const user = req.user;
+    if (user.cart.length > 0) {
       await user.populate("cart.book");
       user.cart = user.cart.filter((cartElement) => {
         if (cartElement.book === null) return false;
         return true;
       });
       return res.send(user.cart);
-    } catch (err) {
-      next(err);
+    } else {
+      res.send({ cart: [] });
     }
-  } else {
-    res.send({ cart: [] });
-    //next({ name: "emptyCart", message: "cart is empty", status: 404 });
+  } catch (err) {
+    next(err);
   }
 });
 
-//get items to local cart
+//get items population to the local cart
 router.post("/cart/getItems", async (req, res, next) => {
-  const cart = req.body;
-  console.log(cart);
   try {
+    const cart = req.body;
     for (el of cart) {
-      console.log(el, "NEXT:");
       let book = await Book.findById(el.id);
-      console.log("HH");
       if (!book) {
+        //?
         book = {};
         book.name = "item not found";
         book.price = 0;
         book._id = el.id;
       }
-      console.log("BOOK:");
-      console.log(book);
+
       el.book = book;
     }
     res.send(cart);
   } catch (err) {
     next(err);
-    // return res
-    //   .status(404)
-    //   .send({ status: 404, message: "unable to find items" });
   }
-  // console.log(bookIds);
-  // const books = Book.find({ _id: { $in: bookIds } });
 });
 
 router.post(
@@ -65,16 +52,15 @@ router.post(
   authUser,
   verifyId(Book),
   async (req, res, next) => {
-    // "status 204" does not return response and does not need to redirect. successful resource created!
     try {
       const bookId = req.params["id"];
       const cart = req.user.cart;
-      //console.log(cart);
       let updated = false;
       if (cart.length > 0) {
         for (const book of cart) {
           if (book.book == bookId) {
             //let qu = req.body.quantity ? req.body.quantity : 1;
+            //NOTE: might get qu{quantity} from user request instead of just adding one
             let qu = 1;
             const currQu = book.quantity;
             book.quantity = currQu + qu;
@@ -86,12 +72,9 @@ router.post(
       if (!updated) {
         cart.push({ book: bookId, quantity: 1 });
       }
-      try {
-        await req.user.save();
-        res.status(201).send(req.user);
-      } catch (err) {
-        next(err);
-      }
+
+      await req.user.save();
+      res.status(201).send(req.user);
     } catch (err) {
       next(err);
     }
@@ -100,17 +83,14 @@ router.post(
 
 router.delete("/users/cart/:id", authUser, async (req, res, next) => {
   // "status 204" does not return response and does not need to redirect. successful resource created!
-  const bookId = req.params["id"];
-  console.log("Book ID:", bookId);
-  //console.log(bookId);
-
-  const books = req.user.cart;
-  //let updated = false;
-
-  req.user.cart = books.filter((el) => {
-    return el.book != bookId;
-  });
   try {
+    const bookId = req.params["id"];
+    const books = req.user.cart;
+
+    req.user.cart = books.filter((el) => {
+      return el.book != bookId;
+    });
+
     await req.user.save();
     res.send(req.user.cart);
   } catch (err) {
@@ -119,21 +99,19 @@ router.delete("/users/cart/:id", authUser, async (req, res, next) => {
 });
 
 router.patch("/users/cart/buy", authUser, async (req, res, next) => {
-  // "status 204" does not return response and does not need to redirect. successful resource created!
-  console.log("CART ROUTE");
-  const cart = [...req.user.cart];
-  console.log(cart);
-  if (cart.length > 0) {
+  try {
+    const cart = [...req.user.cart];
+    if (cart.length === 0) {
+      return next({
+        name: "nothingToUpdate",
+        message: "nothing to buy, cart is empty",
+        status: 204,
+      });
+    }
+
     req.user.cart = [];
     req.user.ordered.push(...cart);
-  } else {
-    next({
-      name: "nothingToUpdate",
-      message: "nothing to buy, cart is empty",
-      status: 204,
-    });
-  }
-  try {
+
     await req.user.save();
     res.send(req.user);
   } catch (err) {
@@ -147,35 +125,36 @@ router.patch(
   verifyId(Book),
   async (req, res, next) => {
     // "status 204" does not return response and does not need to redirect. successful resource created!
-    const id = req.params["id"];
-    let updated = false;
-    if (req.query.quantity) {
+    try {
+      const id = req.params["id"];
+      let updated = false;
+
+      if (!req.query.quantity) {
+        return next({
+          name: "missingData",
+          message: "missing quantity data",
+          status: 400,
+        });
+      }
+
       for (const book of req.user.cart) {
         if (book.book == id) {
-          let qu = req.query.quantity;
+          let quantityToUpdate = req.query.quantity;
 
-          book.quantity = qu;
+          book.quantity = quantityToUpdate;
           updated = true;
           break;
         }
       }
 
       if (!updated) {
-        next({
+        return next({
           name: "wrongData",
           message: "this item does not exists in your cart",
           status: 400,
         });
       }
-    } else {
-      next({
-        name: "missingData",
-        message: "missing quantity data",
-        status: 400,
-      });
-    }
 
-    try {
       await req.user.save();
       res.send(req.user.cart);
     } catch (err) {
