@@ -16,7 +16,7 @@ const cartHtmlElements = (items) => {
     item.classList.add("item");
     const html = `<div class="item-specs">
 
-      <span class="cart-item-name pointer" data-id="${cartItem.id}">
+      <span class="cart-item-name pointer" data-id="${book._id}">
           <a href="/books/${book._id}">
               <img src="${book.url}" style="width:25px">
               <span>${book.name}</span>
@@ -32,13 +32,13 @@ const cartHtmlElements = (items) => {
 
       <div class="counter">
           <button class="subtract count-btn" data-id="${
-            cartItem.id
+            book._id
           }" data-current-quantity="${quantity}">
               -
           </button><span class="amount-of-item">
           ${quantity}
           </span><button class="add count-btn" data-id="${
-            cartItem.id
+            book._id
           }" data-current-quantity="${quantity}">
               +
           </button>
@@ -54,7 +54,7 @@ const cartHtmlElements = (items) => {
 
     const delBtn = document.createElement("button");
     delBtn.classList.add("remove-from-cart");
-    delBtn.setAttribute("data-id", cartItem._id);
+    delBtn.setAttribute("data-id", book._id);
     delBtn.innerHTML = "X";
     delBtn.addEventListener("click", function (e) {
       const id = e.target.getAttribute("data-id");
