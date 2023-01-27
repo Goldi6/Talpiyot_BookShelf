@@ -3,7 +3,7 @@ const verifyId = (_model) => {
     const id = req.params["id"];
     const document = _model.findById(id);
     if (!document) {
-      next(document);
+      return next(document);
     }
     next();
   };

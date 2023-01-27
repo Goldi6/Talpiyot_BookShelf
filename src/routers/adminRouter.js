@@ -15,7 +15,7 @@ router.post("/admin/login", async (req, res, next) => {
   try {
     const user = await Admin.findUserByEmailAndPassword(email, password);
 
-    if (!user) next(user);
+    if (!user) return next(user);
 
     const token = await user.generateAuthToken();
 

@@ -77,7 +77,7 @@ const paginatedResults = (model, isAdmin = false) => {
         return next();
       } else {
         if (isAdmin) {
-          next({
+          return next({
             status: 404,
             message: "No books found",
             name: "EmptyBooksData",
@@ -89,7 +89,7 @@ const paginatedResults = (model, isAdmin = false) => {
           //   message: "No books in DataBase, please add Books",
           // });
         }
-        next({
+        return next({
           status: 404,
           message: "No books found according to your request",
           name: "EmptyBooksData",

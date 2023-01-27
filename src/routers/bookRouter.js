@@ -56,7 +56,7 @@ router.get("/user/books/:id", authUser, async (req, res, next) => {
     const book = await Book.findById(_id);
 
     if (!book) {
-      next(book);
+      return next(book);
     }
     res.render("bookPage", { book, user });
   } catch (err) {
@@ -109,7 +109,7 @@ router.patch(
         runValidators: true,
       });
       if (!book) {
-        next(book);
+        return next(book);
       }
 
       res.send(book);
