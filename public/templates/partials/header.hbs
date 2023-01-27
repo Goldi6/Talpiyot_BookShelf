@@ -85,12 +85,12 @@
 <a href="http://localhost:3000/user/cart">
         <button class="icon-img-btn" id="cart-btn">
             <span id="cart-counter">
-                {{#if user}} {{user.cartQuantity}} {{else}}0{{/if}}
+                {{#if user}} {{user.cartItemsCount}} {{else}}0{{/if}}
             </span>
         </button>
         </a>
 
-{{/if}}          
+{{/if}}    
                
         {{!-- <div id="nav-icon" class="icon">
             <span>

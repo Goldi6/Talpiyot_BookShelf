@@ -102,7 +102,15 @@ const userSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toObject: {
+      virtuals: true,
+    },
+    toJSON: {
+      virtuals: true,
+    },
+  }
 );
 
 //middlewares
@@ -154,25 +162,35 @@ userSchema.methods.toJSON = function () {
   //goes before signifying to obj, so returns the new obj to the client
   const user = this;
   const userObj = user.toObject();
+
   delete userObj.password;
   delete userObj.__v;
-  // delete userObj.tokens;
+  delete userObj.tokens;
 
   return userObj;
 };
 
 ////////////
 //getters
-////////////
-userSchema.virtual("age").get(() => {
-  let age = new Date() - new Date(this.birthday).getTime();
-  age = new Date(age);
-  age = age.getUTCFullYear();
-  age = Math.abs(age - 1970);
-  return age;
-});
-userSchema.virtual("fullName").get(() => {
-  return this.firstName + " " + this.lastName;
+// ////////////
+// userSchema.virtual("age").get(function () {
+//   let age = new Date() - new Date(this.birthday).getTime();
+//   age = new Date(age);
+//   age = age.getUTCFullYear();
+//   age = Math.abs(age - 1970);
+//   return age;
+// });
+
+userSchema.virtual("cartItemsCount").get(function () {
+  const cart = this.cart;
+  console.log(cart);
+  let quantity = 0;
+  if (cart.length > 0) {
+    for (const item of cart) {
+      quantity += parseInt(item.quantity);
+    }
+  }
+  return quantity;
 });
 
 const User = mongoose.model("User", userSchema);
