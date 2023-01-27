@@ -111,7 +111,7 @@ function gatherData(form) {
 const submitUpdate = async (data) => {
   console.log(data);
 
-  updateUserData(data, "/admin/update").then((data) => {
+  updateUserData(data, "/admin").then((data) => {
     console.log(data);
 
     if (data !== undefined) {

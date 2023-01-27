@@ -10,7 +10,7 @@ const {
 } = require("../middleware/verifiers.js");
 
 //TODO: cart handlebar
-router.get("/users/cart/get", authUser, async (req, res, next) => {
+router.get("/users/cart", authUser, async (req, res, next) => {
   const user = req.user;
 
   if (user.cart.length > 0) {
@@ -30,8 +30,38 @@ router.get("/users/cart/get", authUser, async (req, res, next) => {
   }
 });
 
+//get items to local cart
+router.post("/cart/getItems", async (req, res, next) => {
+  const cart = req.body;
+  console.log(cart);
+  try {
+    for (el of cart) {
+      console.log(el, "NEXT:");
+      let book = await Book.findById(el.id);
+      console.log("HH");
+      if (!book) {
+        book = {};
+        book.name = "item not found";
+        book.price = 0;
+        book._id = el.id;
+      }
+      console.log("BOOK:");
+      console.log(book);
+      el.book = book;
+    }
+    res.send(cart);
+  } catch (err) {
+    next(err);
+    // return res
+    //   .status(404)
+    //   .send({ status: 404, message: "unable to find items" });
+  }
+  // console.log(bookIds);
+  // const books = Book.find({ _id: { $in: bookIds } });
+});
+
 router.post(
-  "/users/cart/add/:id",
+  "/users/cart/:id",
   authUser,
   verifyId(Book),
   async (req, res, next) => {
@@ -68,7 +98,7 @@ router.post(
   }
 );
 
-router.delete("/users/cart/delete/:id", authUser, async (req, res, next) => {
+router.delete("/users/cart/:id", authUser, async (req, res, next) => {
   // "status 204" does not return response and does not need to redirect. successful resource created!
   const bookId = req.params["id"];
   console.log("Book ID:", bookId);
@@ -88,8 +118,31 @@ router.delete("/users/cart/delete/:id", authUser, async (req, res, next) => {
   }
 });
 
+router.patch("/users/cart/buy", authUser, async (req, res, next) => {
+  // "status 204" does not return response and does not need to redirect. successful resource created!
+  console.log("CART ROUTE");
+  const cart = [...req.user.cart];
+  console.log(cart);
+  if (cart.length > 0) {
+    req.user.cart = [];
+    req.user.ordered.push(...cart);
+  } else {
+    next({
+      name: "nothingToUpdate",
+      message: "nothing to buy, cart is empty",
+      status: 204,
+    });
+  }
+  try {
+    await req.user.save();
+    res.send(req.user);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.patch(
-  "/users/cart/update/:id",
+  "/users/cart/:id",
   authUser,
   verifyId(Book),
   async (req, res, next) => {
@@ -130,58 +183,5 @@ router.patch(
     }
   }
 );
-
-router.patch("/users/cart/buy", authUser, async (req, res, next) => {
-  // "status 204" does not return response and does not need to redirect. successful resource created!
-  console.log("CART ROUTE");
-  const cart = [...req.user.cart];
-  console.log(cart);
-  if (cart.length > 0) {
-    req.user.cart = [];
-    req.user.ordered.push(...cart);
-  } else {
-    next({
-      name: "nothingToUpdate",
-      message: "nothing to buy, cart is empty",
-      status: 204,
-    });
-  }
-  try {
-    await req.user.save();
-    res.send(req.user);
-  } catch (err) {
-    next(err);
-  }
-});
-
-//get items to local cart
-router.post("/cart/getItems", async (req, res, next) => {
-  const cart = req.body;
-  console.log(cart);
-  try {
-    for (el of cart) {
-      console.log(el, "NEXT:");
-      let book = await Book.findById(el.id);
-      console.log("HH");
-      if (!book) {
-        book = {};
-        book.name = "item not found";
-        book.price = 0;
-        book._id = el.id;
-      }
-      console.log("BOOK:");
-      console.log(book);
-      el.book = book;
-    }
-    res.send(cart);
-  } catch (err) {
-    next(err);
-    // return res
-    //   .status(404)
-    //   .send({ status: 404, message: "unable to find items" });
-  }
-  // console.log(bookIds);
-  // const books = Book.find({ _id: { $in: bookIds } });
-});
 
 module.exports = router;

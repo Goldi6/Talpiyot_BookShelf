@@ -9,9 +9,28 @@ const { verifyRequestFields } = require("../middleware/verifiers.js");
 const FILTERS = ["tokens", "cart"];
 
 ////
+router.post("/users/login", async (req, res, next) => {
+  console.log("LOG");
 
+  const { email, password } = req.body;
+  try {
+    const user = await User.findUserByEmailAndPassword(email, password);
+    if (!user) {
+      next(user);
+    }
+    //console.log(user);
+    const token = await user.generateAuthToken();
+    res.cookie("userToken", token);
+    //console.log(token);
+    res.send({ user, token });
+  } catch (err) {
+    next(err);
+    // res.status(400).send({ status: 400, message: err.message });
+  }
+});
+//new user
 router.post(
-  "/users/new",
+  "/users",
   verifyRequestFields(User, FILTERS),
   async (req, res, next) => {
     console.log("HERE");
@@ -30,7 +49,7 @@ router.post(
     }
   }
 );
-
+//get user data
 router.get("/users/get", auth, async (req, res) => {
   try {
     res.send(req.user);
@@ -59,32 +78,13 @@ router.patch(
   }
 );
 
-router.delete("/users/delete", auth, async (req, res, next) => {
+//TODO: add delete button to the client
+router.delete("/users", auth, async (req, res, next) => {
   try {
     await req.user.remove();
     res.send("user Deleted");
   } catch (err) {
     next(err);
-  }
-});
-
-router.post("/users/login", async (req, res, next) => {
-  console.log("LOG");
-
-  const { email, password } = req.body;
-  try {
-    const user = await User.findUserByEmailAndPassword(email, password);
-    if (!user) {
-      next(user);
-    }
-    //console.log(user);
-    const token = await user.generateAuthToken();
-    res.cookie("userToken", token);
-    //console.log(token);
-    res.send({ user, token });
-  } catch (err) {
-    next(err);
-    // res.status(400).send({ status: 400, message: err.message });
   }
 });
 
@@ -105,7 +105,7 @@ router.get("/users/logout", auth, async (req, res, next) => {
   }
 });
 
-router.post("/users/logoutAll", auth, async (req, res, next) => {
+router.get("/users/logoutAll", auth, async (req, res, next) => {
   try {
     req.user.tokens = [];
     await req.user.save();

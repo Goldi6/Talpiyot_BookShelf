@@ -1,6 +1,6 @@
 const getUserCart = async () => {
   // const headers = new Headers({ Authorization: "Bearer " + token });
-  return await fetch("/users/cart/get")
+  return await fetch("/users/cart")
     .then((cart) => {
       return cart.json();
     })

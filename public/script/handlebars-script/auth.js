@@ -32,7 +32,7 @@ registerForm.onsubmit = function (e) {
     console.log(data);
     console.log();
 
-    postAuth("http://localhost:3000/users/new", data)
+    postAuth("http://localhost:3000/users", data)
       .then((user) => {
         //console.log(user);
         if (user.user) {

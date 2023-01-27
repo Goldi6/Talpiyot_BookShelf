@@ -19,7 +19,7 @@ const addItemToUserCart = async (id) => {
     // "Content-Type": "application/json",
   });
 
-  return await fetch(`/users/cart/add/${id}`, {
+  return await fetch(`/users/cart/${id}`, {
     method: "POST",
     headers,
   })
@@ -36,14 +36,6 @@ const updateCounter = () => {
   count++;
   counter.innerHTML = count;
 };
-
-// setTimeout(() => {
-//   box.classList.add("opacity");
-//   setTimeout(() => {
-//     box.classList.remove("opacity");
-//   }, 1200);
-// }, 100);
-//opacPromice();
 
 const addToCart = (bookId) => {
   if (!tokenExists("userToken")) {
@@ -90,7 +82,7 @@ const deleteItemFromUserCart = async (id) => {
     // "Content-Type": "application/json",
   });
 
-  return await fetch(`/users/cart/delete/${id}`, {
+  return await fetch(`/users/cart/${id}`, {
     method: "DELETE",
     headers,
   })
@@ -169,7 +161,7 @@ const updateItemInUserCart = async (id, quantity) => {
     // "Content-Type": "application/json",
   });
 
-  return await fetch(`/users/cart/update/${id}?quantity=${quantity}`, {
+  return await fetch(`/users/cart/${id}?quantity=${quantity}`, {
     method: "PATCH",
     headers,
   })

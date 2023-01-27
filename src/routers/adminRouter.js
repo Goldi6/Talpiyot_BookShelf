@@ -7,8 +7,28 @@ const { verifyRequestFields } = require("../middleware/verifiers.js");
 const FILTER = ["tokens", "cart"];
 ////
 
+router.post("/admin/login", async (req, res, next) => {
+  // console.log("LOG");
+
+  const { email, password } = req.body;
+
+  try {
+    const user = await Admin.findUserByEmailAndPassword(email, password);
+
+    if (!user) next(user);
+
+    const token = await user.generateAuthToken();
+
+    res.cookie("token", token);
+    res.render("main", { username: user.username });
+  } catch (err) {
+    next(err);
+  }
+});
+//NOTE: UNUSED in client
+//?NEW ADMIN
 router.post(
-  "/admin/new",
+  "/admin",
   verifyRequestFields(Admin, FILTER),
   async (request, response, next) => {
     const user = new Admin(request.body);
@@ -22,16 +42,18 @@ router.post(
     }
   }
 );
-
-router.get("/admin/get", auth, async (req, res, next) => {
+//NOTE : unused in client
+router.delete("/admin", auth, async (req, res, next) => {
   try {
-    res.send(req.user);
+    await req.user.remove();
+    res.send("user Deleted");
   } catch (err) {
     next(err);
   }
 });
+//update admin
 router.patch(
-  "/admin/update",
+  "/admin",
   auth,
   verifyRequestFields(Admin, FILTER),
   async (req, res, next) => {
@@ -57,35 +79,14 @@ router.patch(
     }
   }
 );
-
-router.delete("/admin/delete", auth, async (req, res, next) => {
-  try {
-    await req.user.remove();
-    res.send("user Deleted");
-  } catch (err) {
-    next(err);
-  }
-});
-
-router.post("/admin/login", async (req, res, next) => {
-  // console.log("LOG");
-
-  const { email, password } = req.body;
-
-  try {
-    const user = await Admin.findUserByEmailAndPassword(email, password);
-
-    if (!user) next(user);
-
-    const token = await user.generateAuthToken();
-
-    res.cookie("token", token);
-    res.render("main", { username: user.username });
-  } catch (err) {
-    next(err);
-  }
-});
-
+//NOTE : unused
+// router.get("/admin/get", auth, async (req, res, next) => {
+//   try {
+//     res.send(req.user);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 router.get("/admin/logout", auth, async (req, res, next) => {
   console.log("LOGOUT");
   console.log(req.user);
@@ -101,7 +102,7 @@ router.get("/admin/logout", auth, async (req, res, next) => {
   }
 });
 
-router.post("/admin/logoutAll", auth, async (req, res) => {
+router.get("/admin/logoutAll", auth, async (req, res) => {
   try {
     req.user.tokens = [];
     await req.user.save();
