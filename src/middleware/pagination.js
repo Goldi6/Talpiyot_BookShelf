@@ -1,5 +1,4 @@
 const paginatedResults = (model, isAdmin = false) => {
-  console.log("GETTING BOOKS");
   return async (req, res, next) => {
     const search = {};
     const options = { sort: { createdAt: 1 } };
@@ -12,7 +11,6 @@ const paginatedResults = (model, isAdmin = false) => {
     if (isAdmin) {
       if (req.query.inStock) {
         const inStock = req.query.inStock;
-        // console.log(inStock);
         if (inStock) search.quantity = { $gte: 1 };
         else if (inStock === false) {
           search.quantity = { $lt: 1 };
@@ -34,12 +32,12 @@ const paginatedResults = (model, isAdmin = false) => {
     }
 
     try {
-      const books = await model.find(search, match, options);
+      const count = await model.countDocuments(search);
 
-      if (books.length > 0) {
+      if (count > 0) {
         let page = 1;
         let limit = 10;
-        if (isAdmin) limit = books.length;
+        //if (isAdmin) limit = counter;
 
         if (req.query.limit) {
           limit = parseInt(req.query.limit);
@@ -52,9 +50,12 @@ const paginatedResults = (model, isAdmin = false) => {
         const endIndex = page * limit;
         const result = {};
 
-        result.booksPage = books.slice(startIndex, endIndex);
-        console.log("THIS BOOKS PAGE");
-        //console.log(result.booksPage);
+        const books = await model
+          .find(search, match, options)
+          .limit(limit)
+          .skip(startIndex);
+
+        result.booksPage = books;
 
         result.limit = limit;
         const pages = { current: page };
@@ -66,9 +67,9 @@ const paginatedResults = (model, isAdmin = false) => {
             pages.morePrevious = page - 2;
           }
         }
-        if (endIndex < books.length) {
+        if (endIndex < count) {
           pages.next = page + 1;
-          if ((page + 1) * limit < books.length) {
+          if ((page + 1) * limit < count) {
             pages.moreNext = page + 2;
           }
         }
@@ -83,11 +84,6 @@ const paginatedResults = (model, isAdmin = false) => {
             name: "EmptyBooksData",
             isAdmin: true,
           });
-
-          // return res.render("dashboard", {
-          //   username: req.user.username,
-          //   message: "No books in DataBase, please add Books",
-          // });
         }
         return next({
           status: 404,
@@ -95,13 +91,9 @@ const paginatedResults = (model, isAdmin = false) => {
           name: "EmptyBooksData",
           isAdmin: false,
         });
-        // return res
-        //   .status(404)
-        //   .send({ status: 404, message: "books not found" });
       }
     } catch (err) {
       next(err);
-      //res.status(500).send(err);
     }
   };
 };

@@ -4,6 +4,10 @@ const handlePaginatedBooks = (req, res, isAdmin = false) => {
   const books = req.paginatedBooks.booksPage;
   const pages = req.paginatedBooks.pages;
   const limit = req.paginatedBooks.limit;
+  let search = "";
+  if (req.query.search) {
+    search = req.query.search;
+  }
   //console.log(req.user);
 
   if (req.user) {
@@ -15,8 +19,8 @@ const handlePaginatedBooks = (req, res, isAdmin = false) => {
       book.user = type;
     }
 
-    return res.render("main", { books, pages, limit, user });
-  } else return res.render("main", { books, pages, limit });
+    return res.render("main", { books, pages, limit, user, search });
+  } else return res.render("main", { books, pages, limit, search });
 };
 
 module.exports = handlePaginatedBooks;
