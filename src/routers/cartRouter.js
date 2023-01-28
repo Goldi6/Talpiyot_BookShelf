@@ -6,29 +6,14 @@ const router = express.Router();
 const authUser = require("../middleware/authUser");
 const { verifyId } = require("../middleware/verifiers.js");
 
-//TODO: cart handlebar
-router.get("/users/cart", authUser, async (req, res, next) => {
-  try {
-    const user = req.user;
-    if (user.cart.length > 0) {
-      await user.populate("cart.book");
-      user.cart = user.cart.filter((cartElement) => {
-        if (cartElement.book === null) return false;
-        return true;
-      });
-      return res.send(user.cart);
-    } else {
-      res.send({ cart: [] });
-    }
-  } catch (err) {
-    next(err);
-  }
-});
-
 //get items population to the local cart
-router.post("/cart/getItems", async (req, res, next) => {
+router.post("/cart", async (req, res, next) => {
   try {
     const cart = req.body;
+    let totalPrice = 0;
+    if (Object.keys(cart).length === 0)
+      return res.render("cart", { totalPrice: 0 });
+
     for (el of cart) {
       let book = await Book.findById(el.id);
       if (!book) {
@@ -39,9 +24,10 @@ router.post("/cart/getItems", async (req, res, next) => {
         book._id = el.id;
       }
 
+      totalPrice += book.price * el.quantity;
       el.book = book;
     }
-    res.send(cart);
+    res.render("cart", { cart, totalPrice });
   } catch (err) {
     next(err);
   }

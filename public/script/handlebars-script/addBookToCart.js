@@ -1,11 +1,15 @@
-import { addToCart } from "./modules/cartActions.js";
 //add To cart
+import { addToCart } from "./modules/cart/addToCart.js";
 
-const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
+const setupAddToCartButtons = () => {
+  const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
 
-for (const btn of addToCartButtons) {
-  btn.addEventListener("click", function (e) {
-    const bookId = e.target.getAttribute("data-id");
-    addToCart(bookId);
-  });
-}
+  for (const btn of addToCartButtons) {
+    btn.addEventListener("click", function (e) {
+      const bookId = e.target.getAttribute("data-id");
+      addToCart(bookId);
+    });
+  }
+};
+
+setupAddToCartButtons();

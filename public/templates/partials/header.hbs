@@ -1,98 +1,80 @@
-
-    <header>
-
-<div id="icons-container">
-    <div id="profile-header" class="authenticate ">
-
-
-
-{{#if user}}
-
-{{#if (equalsTo user.role "Admin")}}
-
-        <a href="/admin/profile">
-            <div id="profile-icon" class="icon admin" >
-                <span class="circle">
-            
-                </span>
-                <span class="curve">
-            
-                </span>
+<header>
+  <div id="icons-container">
+    <div id="profile-header" class="authenticate">
+      {{#if user}}
+        {{#if (equalsTo user.role "Admin")}}
+          <a href="/admin/profile">
+            <div id="profile-icon" class="icon admin">
+              <span class="circle">
+              </span>
+              <span class="curve">
+              </span>
             </div>
-        </a>
-        <a id="header-username admin" href="/admin/profile">
+          </a>
+          <a id="header-username admin" href="/admin/profile">
             {{user.username}}
-        </a>
-        <a href="/admin/logout">
+          </a>
+          <a href="/admin/logout">
             <button id="logout-btn" class="admin icon-img-btn">
             </button>
-        </a>
-       {{else}}
-     <a href="/user/profile">
-            <div id="profile-icon" class="icon" >
-                <span class="circle">
-            
-                </span>
-                <span class="curve">
-            
-                </span>
+          </a>
+        {{else}}
+          <a href="/user/profile">
+            <div id="profile-icon" class="icon">
+              <span class="circle">
+              </span>
+              <span class="curve">
+              </span>
             </div>
-        </a>
-        <a id="header-username" href="/user/profile">
-            
-                {{user.firstName}} {{user.lastName}}
-         
-        </a>
-        <a href="/users/logout" id="logout-link">
+          </a>
+          <a id="header-username" href="/user/profile">
+            {{user.firstName}} {{user.lastName}}
+          </a>
+          <a href="/users/logout" id="logout-link">
             <button class="icon-img-btn" id="logout-btn">
             </button>
-        </a>
- {{/if}}
+          </a>
         {{/if}}
-         {{#unless user}}
-                <a href="/login">Login</a>
-            {{/unless}}
+      {{/if}}
+      {{#unless user}}
+        <a href="/login">
+          Login
+        </a>
+      {{/unless}}
     </div>
     <h1>
-        {{#if (equalsTo user.role "Admin")}}
-
-        <a href="/admin" style="all:inherit;">Book Shelf Admin</a>
-        {{else}}
-
-
-  <a href="/" style="all:inherit;">Book Shelf</a>
-
-
-        {{/if}}
-        
-        
-        </h1>
-
-    <div id="options-header" >
-        
-
-
-
-<div id="action-message">
-    
-</div>
-
-{{#if (equalsTo user.role "Admin")}}
-
-        <button id="add-book-btn" class="admin icon-img-btn"></button>
-        {{else}}
-
-<a href="http://localhost:3000/user/cart">
-        <button class="icon-img-btn" id="cart-btn">
-            <span id="cart-counter">
-                {{#if user}} {{user.cartItemsCount}} {{else}}0{{/if}}
-            </span>
-        </button>
+      {{#if (equalsTo user.role "Admin")}}
+        <a href="/admin" style="all:inherit;">
+          Book Shelf Admin
         </a>
+      {{else}}
+        <a href="/" style="all:inherit;">
+          Book Shelf
+        </a>
+      {{/if}}
+    </h1>
 
-{{/if}}    
-               
-        {{!-- <div id="nav-icon" class="icon">
+    <div id="options-header">
+      <div id="action-message">
+      </div>
+
+      {{#if (equalsTo user.role "Admin")}}
+        <button id="add-book-btn" class="admin icon-img-btn"></button>
+      {{else}}
+        <a href="http://localhost:3000/user/cart">
+          <button class="icon-img-btn" id="cart-btn">
+            <span id="cart-counter">
+              {{#if user}}
+                {{user.cartItemsCount}}
+              {{else}}
+                0
+              {{/if}}
+            </span>
+          </button>
+        </a>
+      {{/if}}
+
+      {{! <div id="nav-icon" class="icon">
             <span>
         
             </span><span>
@@ -100,13 +82,7 @@
             </span><span>
         
             </span>
-        </div> --}}
+        </div> }}
     </div>
-</div>
-
-
+  </div>
 </header>
-
-
-
-

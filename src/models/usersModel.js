@@ -183,7 +183,6 @@ userSchema.methods.toJSON = function () {
 
 userSchema.virtual("cartItemsCount").get(function () {
   const cart = this.cart;
-  console.log(cart);
   let quantity = 0;
   if (cart.length > 0) {
     for (const item of cart) {
@@ -192,7 +191,14 @@ userSchema.virtual("cartItemsCount").get(function () {
   }
   return quantity;
 });
-
+userSchema.virtual("cartTotalPrice").get(async function () {
+  let totalPrice = 0;
+  for (const item of this.cart) {
+    const product = await Book.findById(item.book);
+    totalPrice += product.price * item.quantity;
+  }
+  return totalPrice;
+});
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;

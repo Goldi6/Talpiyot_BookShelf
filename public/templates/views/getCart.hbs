@@ -1,0 +1,54 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {{>General_style}}
+   <link rel="stylesheet" href="../../style/css/modal.css">
+    <title>
+      Document
+    </title>
+    
+  </head>
+  <body>
+    <script type="module" defer>
+       import {setupCheckoutBtn,setupDeleteButtons,setupUpdateButtons} from "../../script/handlebars-script/modules/cartActions.js";
+       import {setLocalCartCount} from "../../script/handlebars-script/getCartQuantity.js"
+      function runScripts(){
+        setupCheckoutBtn();
+        setupDeleteButtons();
+        setupUpdateButtons();
+        setLocalCartCount();
+
+      }
+      const fetchCart = async()=>{ 
+        
+            let cart =window.localStorage.getItem("cart"); 
+          const headers = new Headers({ "Content-Type": "application/json" });
+            const body = cart;
+        
+        const html = await fetch("/cart",{headers,method:"POST",body:cart}).then(res=>{
+      return res.text();
+      }).then(html => {
+    const parser = new DOMParser();
+    const newDoc = parser.parseFromString(html, 'text/html');
+
+    const currentHead = document.head;
+    const currentBody = document.body;
+
+    const newHead = newDoc.head;
+    const newBody = newDoc.body;
+
+    currentHead.innerHTML = newHead.innerHTML;
+    currentBody.innerHTML = newBody.innerHTML;
+
+    runScripts();
+  })
+  .catch(error => console.error(error));
+
+      };
+
+      fetchCart();
+    </script>
+  </body>
+</html>

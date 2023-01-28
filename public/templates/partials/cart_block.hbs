@@ -1,68 +1,79 @@
- 
 <main>
-<div id="cart-container">
-    
-    
-<h2>Cart</h2>
+  <div id="cart-container">
+    <h2>
+      Cart
+    </h2>
     <div id="cart">
-        <div id="items-container">
-            {{!-- {{#if user.cart}}
-                {{#each user.cart}}
+      <div id="items-container">
+        {{#if cart}}
+          {{#each cart}}
+            <div class="item" data-id="{{this.book._id}}">
+              <div class="item-specs">
+                <span class="cart-item-name pointer">
+                  <a href="/books/{{this.book._id}}">
+                    <img src="{{this.book.url}}" style="width:25px" />
+                    <span>
+                      {{this.book.name}}
+                    </span>
+                  </a>
+                </span>
 
-                    <div class="item" data-id="{{this._id}}">
-                        
-<div class="item-specs">
+                <span class="cart-item-price">
+                  {{this.book.price}}$
+                </span>
 
-      <span class="cart-item-name pointer" data-id="{{this.id}}">
-          <a href="/books/book?id={{this._id}}">
-              <img src="{{this.url}}" style="width:25px">
-              <span>{{this.name}}</span>
-          </a>
-      
-      
-      </span>
+                <div class="counter">
+                  <button
+                    class="subtract count-btn"
+                    data-id="{{this.book._id}}"
+                  >
+                    -
+                  </button>
+                  <span
+                    class="amount-of-item"
+                    data-current-quantity="{{this.quantity}}"
+                  >
+                    {{this.quantity}}
+                  </span>
+                  <button class="add count-btn" data-id="{{this.book._id}}">
+                    +
+                  </button>
+                </div>
 
+                <span class="cart-item-price">
+                  {{multiply this.quantity this.book.price}}$
+                </span>
+              </div>
 
-      <span class="cart-item-price">
-      {{this.price}} 
-       </span>
-
-      <div class="counter">
-          <button class="subtract count-btn" data-id="{{
-            this._id
-          }}" data-current-quantity="{{this.quantity}}">
-              -
-          </button><span class="amount-of-item">
-          {{this.quantity}}
-          </span><button class="add count-btn" data-id="{{
-            this._id
-          }}" data-current-quantity="{{this.quantity}}">
-              +
-          </button>
+              <button class="remove-from-cart" data-id="{{this.book._id}}">
+                X
+              </button>
+            </div>
+          {{/each}}
+        {{/if}}
       </div>
-
-
-      <span class="cart-item-price">
-          {{multiply this.quantity this.price}} 
-      </span>
-  </div>
-
-
-<button class="remove-from-cart" data-id="{{this._id}}">X</button>
-                    </div>
-
-
-                {{/each}}
-
-
-             {{/if}} --}}
-        </div>
-        <div class="options-container">
-            <p id="cart-message">No Items in cart</p>
-            <h3>Total: <span id="total-cart">
-                0
-            </span> </h3>
-            <button id="checkout-btn" class="pointer">Checkout</button></div>
-        </div>
+      <div class="options-container">
+        {{#unless cart}}
+          <p id="cart-message">
+            No Items in cart
+          </p>
+        {{/unless}}
+        <h3>
+          Total:
+          <span id="total-cart">
+            {{#if totalPrice}}
+              {{totalPrice}}$
+            {{else}}
+              0$
+            {{/if}}
+          </span>
+        </h3>
+        {{#unless (equalsTo totalPrice "0")}}
+          <button id="checkout-btn" class="pointer">
+            Checkout
+          </button>
+        {{/unless}}
+      </div>
     </div>
+  </div>
 </main>

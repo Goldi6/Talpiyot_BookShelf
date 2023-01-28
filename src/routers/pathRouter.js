@@ -9,10 +9,24 @@ const router = express.Router();
 
 //TODO: check this
 router.get("/cart", function (req, res) {
-  res.render("cart", { user: req.user });
+  res.render("getCart");
+
+  //res.render("cart", { cart: req.cart, totalPrice: req.totalPrice });
 });
-router.get("/user/cart", authUser, function (req, res) {
-  res.render("cart", { user: req.user });
+router.get("/user/cart", authUser, async function (req, res) {
+  const user = req.user;
+  if (user.cart.length > 0) {
+    await user.populate("cart.book");
+    user.cart = user.cart.filter((cartElement) => {
+      if (cartElement.book === null) return false;
+      return true;
+    });
+  }
+  const totalPrice = await user.cartTotalPrice;
+  const renderObj = { user, cart: user.cart, totalPrice };
+  console.log(renderObj);
+  user.save();
+  res.render("cart", renderObj);
 });
 
 // router.get("/book/:bookId", async function (req, res) {
