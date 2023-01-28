@@ -87,7 +87,7 @@ main {
   display: flex;
   justify-content: space-evenly;
 }
-.btn-block button, .btn-block #update-user-btn {
+.btn-block button, .btn-block #update-user-btn, .btn-block input {
   margin-top: 2.5rem;
   padding: 0.5rem;
   border-radius: 3rem;

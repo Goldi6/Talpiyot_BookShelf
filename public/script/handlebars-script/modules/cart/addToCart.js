@@ -1,18 +1,7 @@
 import { showActionMessage } from "../actionMessage.js";
 import { updateCounter } from "./updateCounter.js";
 import { getCookie } from "../cookies.js";
-
-const addItemToUserCart = async (id) => {
-  return await fetch(`/users/cart/${id}`, {
-    method: "POST",
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+import { DBrequest } from "./fetch.js";
 
 const addToCart = (bookId) => {
   if (getCookie("userToken") === "") {
@@ -43,7 +32,7 @@ const addToCart = (bookId) => {
     updateCounter();
     // alert("item added to cart!");
   } else {
-    addItemToUserCart(bookId).then((result) => {
+    DBrequest(bookId, "POST").then((result) => {
       // alert("item added to cart!");
       console.log(result);
       showActionMessage("item added to cart!");

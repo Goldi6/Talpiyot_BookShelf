@@ -1,22 +1,11 @@
 import { getCookie } from "../cookies.js";
 import { showActionMessage } from "../actionMessage.js";
-
-const deleteItemFromUserCart = async (id) => {
-  return await fetch(`/users/cart/${id}`, {
-    method: "DELETE",
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+import { DBrequest } from "./fetch.js";
 
 const deleteItemFromCart = (e, bookId) => {
   const item = e.target.parentNode;
   if (getCookie("userToken") !== "") {
-    deleteItemFromUserCart(bookId).then((data) => {
+    DBrequest(bookId, "DELETE").then((data) => {
       console.log(data);
       item.remove();
       showActionMessage("Deleted!");

@@ -1,17 +1,7 @@
 import { getCookie } from "../cookies.js";
 import { showActionMessage } from "../actionMessage.js";
+import { DBrequest } from "./fetch.js";
 
-const updateItemInUserCart = async (id, quantity) => {
-  return await fetch(`/users/cart/${id}?quantity=${quantity}`, {
-    method: "PATCH",
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
 const getAmountBlock = (btn) => {
   const parent = btn.parentNode;
   return parent.querySelector(".amount-of-item");
@@ -33,7 +23,7 @@ const updateItemInCart = (e, bookId, action) => {
     quantity = action == "+" ? quantity + 1 : quantity - 1;
 
     if (quantity > 0) {
-      updateItemInUserCart(bookId, quantity).then(() => {
+      DBrequest(bookId, "POST", `quantity=${quantity}`).then(() => {
         updateAmountBlock(e.target, quantity);
         showActionMessage("Updated!");
         //window.location.reload();
