@@ -42,7 +42,7 @@ updateForm.onsubmit = function (e) {
           let type = form.getAttribute("data-type");
           console.log(type);
           type = type === "admin" ? "admin" : "users";
-          const url = "/" + type + "/update";
+          const url = "/" + type;
           //
           //
           //

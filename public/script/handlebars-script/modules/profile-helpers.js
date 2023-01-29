@@ -1,7 +1,9 @@
 function gatherData(form) {
   const viewData = [];
   const postData = {};
-  const fields = form.querySelectorAll('input:not([type="submit"])');
+  const fields = form.querySelectorAll(
+    'input:not([type="submit"],[type="reset"])'
+  );
 
   let passwd1 = "";
   let passwd2 = "";
