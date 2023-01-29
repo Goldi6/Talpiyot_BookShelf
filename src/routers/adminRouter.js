@@ -58,9 +58,7 @@ router.patch(
   verifyRequestFields(Admin, FILTER),
   async (req, res, next) => {
     try {
-      console.log(req.body);
       const _id = req.user._id;
-      console.log(_id);
 
       const user = await Admin.findOneAndUpdate({ _id }, req.body, {
         new: true,
@@ -73,20 +71,11 @@ router.patch(
       }
       next(user);
     } catch (err) {
-      console.log("CATCH");
-      console.log(err);
       next(err);
     }
   }
 );
-//NOTE : unused
-// router.get("/admin/get", auth, async (req, res, next) => {
-//   try {
-//     res.send(req.user);
-//   } catch (err) {
-//     next(err);
-//   }
-// });
+
 router.get("/admin/logout", auth, async (req, res, next) => {
   console.log("LOGOUT");
   console.log(req.user);
