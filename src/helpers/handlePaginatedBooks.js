@@ -1,4 +1,11 @@
 const handlePaginatedBooks = (req, res, isAdmin = false) => {
+  if (Object.keys(req.paginatedBooks).length === 0) {
+    if (req.user) {
+      return res.render("main", { user: req.user });
+    } else {
+      return res.render("main");
+    }
+  }
   const books = req.paginatedBooks.booksPage;
   const pages = req.paginatedBooks.pages;
   const limit = req.paginatedBooks.limit;
