@@ -3,18 +3,14 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { viewsPath } = require("./helpers/handlebars.js");
 const nocache = require("nocache");
+require("./db/mongoose");
 
 // const { engine, create } = require("express-handlebars");
 
 const path = require("path");
 const publicDirectoryPath = path.join(__dirname, "../public");
 
-require("./db/mongoose");
-const authRouter = require("./routers/authRouter");
-const bookRouter = require("./routers/bookRouter");
-const cartRouter = require("./routers/cartRouter");
-const adminRouter = require("./routers/adminRouter");
-const pathRouter = require("./routers/pathRouter");
+const routerHandler = require("./routers/");
 
 const app = express();
 
@@ -28,21 +24,7 @@ app.use(nocache());
 app.set("view engine", "hbs");
 app.set("views", viewsPath);
 
-app.use(authRouter);
-app.use(bookRouter);
-app.use(cartRouter);
-app.use(adminRouter);
-app.use(pathRouter);
-
-const {
-  clientErrorHandler,
-  internalErrorHandler,
-  errorLogger,
-} = require("./middleware/errorHandlers.js");
-
-app.use(errorLogger);
-app.use(clientErrorHandler);
-app.use(internalErrorHandler);
+app.use(routerHandler);
 
 ////
 ////
