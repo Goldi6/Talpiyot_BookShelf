@@ -39,24 +39,15 @@ router.post(
 
       const token = await user.generateAuthToken();
       res.cookie("userToken", token);
-      //TODO: remove token from response
       res.status(201).send({ user, token });
-      //res.redirect("/user/books/search");
     } catch (err) {
       next(err);
     }
   }
 );
-//get user data
-router.get("/users/get", auth, async (req, res) => {
-  try {
-    res.send(req.user);
-  } catch (err) {
-    err.status(500).send(err);
-  }
-});
+
 router.patch(
-  "/users/update",
+  "/users",
   auth,
   verifyRequestFields(User, FILTERS),
   async (req, res, next) => {
