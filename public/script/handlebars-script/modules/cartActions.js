@@ -34,15 +34,5 @@ function setupCheckoutBtn() {
     };
   }
 }
-// const getLocalCart = async (cart) => {
-//   const headers = new Headers({ "Content-Type": "application/json" });
-//   const body = cart;
-//   //console.log(body);
-//   return fetch("/cart/getItems", { headers, body, method: "POST" }).then(
-//     (response) => {
-//       return response.json();
-//     }
-//   );
-// };
 
 export { setupDeleteButtons, setupUpdateButtons, setupCheckoutBtn };
