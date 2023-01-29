@@ -10,7 +10,10 @@ searchBtn.onclick = function () {
   const searchFor = searchInput.value;
 
   const queries = `limit=${limit}&search=${searchFor}`;
-  window.location.href = "http://localhost:3000/books/search?" + queries;
+  let location = window.location.href;
+  location = location.split("?");
+  location = location[0];
+  window.location.href = location + "?" + queries;
 };
 
 const pageNumbers = document.querySelectorAll(".page-num");
